@@ -353,7 +353,7 @@
             document.querySelector('.search-box').classList.add('hidden');
             document.querySelector('.result-box').classList.remove('hidden');
             document.querySelector('#map').classList.remove('hidden');
-            var randomNum = getRandomNumber(1, 5);
+            var randomNum = getRandomNumber(1, 25);
             var imgSrc = 'images/' + randomNum + '.png';
             document.querySelector('.result-img').src = imgSrc;
 
@@ -411,7 +411,7 @@
                                 myMap.geoObjects.add(redPlacemark);
 
                                 var distance = ymaps.coordSystem.geo.getDistance(myMap.geoObjects.get(0).geometry.getCoordinates(), redPointCoords);
-                                var scoreForRound = Math.max(0, Math.round((1000 - distance) / 10));
+                                var scoreForRound = Math.max(0, Math.round((3000 - distance) / 30));
                                 score += scoreForRound;
 
                                 document.getElementById('score').innerText = 'У вас ' + scoreForRound + ' очков (' + distance.toFixed(2) + 'м до точки)';
@@ -438,7 +438,7 @@
                         document.getElementById('next-btn').classList.add('hidden');
                         document.getElementById('score').classList.add('hidden');
                         myMap.geoObjects.removeAll();
-                        randomNum = getRandomNumber(1, 5);
+                        randomNum = getRandomNumber(1, 25);
                         imgSrc = "images/" + randomNum + '.png';
                         document.querySelector('.result-img').src = imgSrc;
                         found = false;
