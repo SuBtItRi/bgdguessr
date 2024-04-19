@@ -267,7 +267,7 @@
 
                     document.getElementById('find-btn').addEventListener('click', function() {
                         if (!found) {
-                            fetch('*/coordinates.txt')
+                            fetch('coordinates.txt')
                                 .then(response => response.text())
                                 .then(data => {
                                     var coordinates = data.trim().split('\n');
