@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск по Белгороду</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('bg.png');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .search-box {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            line-height: 0.5;
+        }
+
+        .subtext {
+            font-size: 12px;
+            color: #525252;
+        }
+
+        #start-btn, #info-btn, #close-info-btn, #restart-btn  {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #start-btn:hover,#info-btn:hover, #close-info-btn:hover, #restart-btn:hover {
+            background-color: darkgreen;
+        }
+
+        #find-btn, #next-btn, #continue-btn  {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 24px;
+            cursor: pointer;
+            width: 100%;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+
+        #find-btn:hover, #next-btn:hover, #continue-btn:hover {
+            background-color: darkgreen;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .result-box {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            bottom: 0;
+        }
+
+        .result-img {
+            width: 100%;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40%;
+            height: 100%;
+        }
+
+        .indicator {
+            margin-top: -5px;
+            font-size: 24px;
+            background-color: #1a40ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        #score {
+            margin-top: 10%;
+            font-size: 24px;
+            color: #1a40ff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        #image-counter {
+            margin-right: 20%;
+        }
+
+        #score-indicator {
+            margin-left: 20%;
+        }
+
+        #end-game-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 999;
+        }
+
+        #info-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 999;
+        }
+
+        p, h4 {
+            line-height: 0.2;
+            text-align: left;
+        }
+
+        a {
+            color: #00b2ff; /* Цвет текста ссылки */
+            text-decoration: blink; /* Подчеркивание текста ссылки */
+        }
+
+        a:hover {
+            color: #007bc6; /* Цвет текста ссылки при наведении */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="search-box">
+            <h2>Игра</h2>
+            <h1>Найдите в Белгороде</h1>
+            <h5 class="subtext">(bgdguessr)</h5>
+            <button id="start-btn">Начать игру</button>
+            <button id="info-btn">Информация</button>
+                <div id="info-popup" class="hidden">
+                    <h2>Информация о игре</h2>
+                    <h4>Правила:</h4>
+                    <p>У вас будет дано фото, вы должны на карте найти где оно сделано,<p>
+                    <p>вы ставите точку и нажимаете кнопку "Найти". Таких фото будет 5,</p>
+                    <p>после подводятся итоги игры.</p>
+                    <h4>Создатель:</h4>
+                    <p>SuBtItRi в <a href="https://t.me/SuBtItRi">Телеграмм</a>, <a href="https://vk.com/wolfzxc">Вконтакте</a></p>
+                    <h4>Версия: Бета-тест 1.0</h4>
+                    <p>В дальнейшем планируется добавить лупу, чтобы лучше рассматривать фотографии.</p>
+                    <button id="close-info-btn" class="hidden">Закрыть</button>
+                </div>
+        </div>
+
+        <div class="result-box hidden">
+            <img class="result-img" src="" alt="Результат">
+            <div class="indicator">
+                <span id="image-counter">1/5</span>
+                <span id="score-indicator">0/500</span>
+            </div>
+            <div id="score"></div>
+            <button id="find-btn" class="hidden">Найти</button>
+            <button id="next-btn" class="hidden">Следующее</button>
+            <button id="continue-btn" class="hidden">Продолжить</button>
+        </div>
+        <div id="map" class="hidden"></div>
+    </div>
+    <div id="end-game-popup" class="hidden">
+        <h2>Итоги игры</h2>
+        <p>Ваш итоговый счет: <span id="final-score">0</span></p>
+        <button id="restart-btn" class="restart-btn">Начать заново</button>
+    </div>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_ключ_апи&lang=ru_RU" type="text/javascript"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var imageCounter = 1;
+            var score = 0;
+            var found = false
+            var links = document.querySelectorAll('a'); // Находим все ссылки на странице
+            links.forEach(function(link) {
+                link.setAttribute('target', '_blank'); // Добавляем атрибут target="_blank"
+            });
+
+                document.getElementById('info-btn').addEventListener('click', function() {
+                    document.getElementById('info-popup').classList.remove('hidden');
+                    document.getElementById('close-info-btn').classList.remove('hidden');
+                });
+
+                document.getElementById('close-info-btn').addEventListener('click', function() {
+                    document.getElementById('info-popup').classList.add('hidden');
+                    document.getElementById('close-info-btn').classList.add('hidden');
+                });
+            document.getElementById('start-btn').addEventListener('click', function() {
+                document.body.style.backgroundImage = 'none';
+                document.body.style.backgroundColor = 'white';
+                document.querySelector('.search-box').classList.add('hidden');
+                document.querySelector('.result-box').classList.remove('hidden');
+                document.querySelector('#map').classList.remove('hidden');
+
+                var randomNum = Math.floor(Math.random() * 3) + 1;
+                var imgSrc = randomNum + '.png';
+                document.querySelector('.result-img').src = imgSrc;
+
+                ymaps.ready(init);
+
+                function init() {
+                    var myMap = new ymaps.Map('map', {
+                        center: [50.595414, 36.587277],
+                        zoom: 12,
+                        controls: [],
+                        type: 'yandex#hybrid'
+                    });
+
+                    myMap.events.add('click', function (e) {
+                        if (!found) {
+                            var coords = e.get('coords');
+
+                            if (myMap.geoObjects.getLength() > 0) {
+                                myMap.geoObjects.removeAll();
+                            }
+
+                            var placemark = new ymaps.Placemark(coords, {}, {
+                                preset: 'islands#greenDotIcon'
+                            });
+
+                            myMap.geoObjects.add(placemark);
+
+                            if (myMap.geoObjects.getLength() > 1) {
+                                var line = new ymaps.Polyline([
+                                    myMap.geoObjects.get(0).geometry.getCoordinates(),
+                                    myMap.geoObjects.get(1).geometry.getCoordinates()
+                                ], {}, {
+                                    strokeColor: '#ff0000',
+                                    strokeWidth: 2
+                                });
+                                myMap.geoObjects.add(line);
+                            }
+
+                            document.getElementById('find-btn').classList.remove('hidden');
+                        }
+                    });
+
+                    document.getElementById('find-btn').addEventListener('click', function() {
+                        if (!found) {
+                            fetch('*/coordinates.txt')
+                                .then(response => response.text())
+                                .then(data => {
+                                    var coordinates = data.trim().split('\n');
+                                    var redPointCoords = coordinates[randomNum - 1].split(',');
+
+                                    var redPlacemark = new ymaps.Placemark(redPointCoords, {}, {
+                                        preset: 'islands#redDotIcon'
+                                    });
+
+                                    myMap.geoObjects.add(redPlacemark);
+
+                                    var distance = ymaps.coordSystem.geo.getDistance(myMap.geoObjects.get(0).geometry.getCoordinates(), redPointCoords);
+                                    var scoreForRound = Math.max(0, Math.round((1000 - distance) / 10));
+                                    score += scoreForRound;
+
+                                    document.getElementById('score').innerText = 'У вас ' + scoreForRound + ' очков (' + distance.toFixed(2) + ' м до точки)';
+                                    document.getElementById('score-indicator').innerText = score + '/500';
+                                    document.getElementById('find-btn').classList.add('hidden');
+                                    document.getElementById('score').classList.remove('hidden');
+
+                                    if (imageCounter < 5) {
+                                        document.getElementById('next-btn').classList.remove('hidden');
+                                    } else {
+                                        document.getElementById('continue-btn').classList.remove('hidden');
+                                    }
+
+                                    found = true;
+                                })
+                                .catch(error => console.error('Ошибка при загрузке файла:', error));
+                        }
+                    });
+
+                    document.getElementById('next-btn').addEventListener('click', function() {
+                        imageCounter++;
+                        if (imageCounter <= 5) {
+                            document.getElementById('image-counter').innerText = imageCounter + '/5';
+                            document.getElementById('next-btn').classList.add('hidden');
+                            document.getElementById('score').classList.add('hidden');
+                            myMap.geoObjects.removeAll();
+                            randomNum = Math.floor(Math.random() * 3) + 1;
+                            imgSrc = randomNum + '.png';
+                            document.querySelector('.result-img').src = imgSrc;
+                            found = false;
+                        }
+                    });
+
+                    document.getElementById('continue-btn').addEventListener('click', function() {
+                        var endGamePopup = document.getElementById('end-game-popup');
+                        endGamePopup.classList.remove('hidden');
+                        document.getElementById('final-score').innerText = score;
+                    });
+
+                    document.getElementById('restart-btn').addEventListener('click', function() {
+                        location.reload();
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
