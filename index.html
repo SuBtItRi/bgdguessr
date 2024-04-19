@@ -17,6 +17,15 @@
             justify-content: center;
             align-items: center;
             position: relative;
+            overflow: hidden;
+        }
+
+        .column {
+            width: 48%; /* Ширина каждого столбца */
+            border: 1px solid #ccc; /* Граница для визуального разделения */
+            padding: 10px;
+            box-sizing: border-box;
+            overflow-y: auto; /* Добавим вертикальную прокрутку, если контент не помещается */
         }
 
         .container {
@@ -31,11 +40,11 @@
         }
 
         .subtext {
-            font-size: 12px;
+            font-size: 16px;
             color: #525252;
         }
 
-        #start-btn, #info-btn, #close-info-btn, #restart-btn  {
+        #start-btn, #info-btn, #close-info-btn, #upd-btn, #close-upd-btn, #restart-btn {
             background-color: green;
             color: white;
             border: none;
@@ -43,13 +52,14 @@
             font-size: 16px;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
         }
 
-        #start-btn:hover,#info-btn:hover, #close-info-btn:hover, #restart-btn:hover {
+        #start-btn:hover, #info-btn:hover, #close-info-btn:hover, #upd-btn:hover, #close-upd-btn:hover, #restart-btn:hover {
             background-color: darkgreen;
         }
 
-        #find-btn, #next-btn, #continue-btn  {
+        #find-btn, #next-btn, #continue-btn {
             background-color: green;
             color: white;
             border: none;
@@ -68,6 +78,10 @@
 
         .hidden {
             display: none;
+        }
+
+        .flex {
+            display: flex;
         }
 
         .result-box {
@@ -117,30 +131,35 @@
             margin-left: 20%;
         }
 
-        #end-game-popup {
+        #info-popup, #upd-popup, #end-game-popup {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255);
             padding: 20px;
             border-radius: 10px;
             z-index: 999;
         }
 
-        #info-popup {
+        #upd-popup {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255);
             padding: 20px;
             border-radius: 10px;
             z-index: 999;
         }
 
-        p, h4 {
-            line-height: 0.2;
+        p {
+            line-height: 1.2;
+            text-align: left;
+        }
+
+        h4 {
+            line-height: 0;
             text-align: left;
         }
 
@@ -156,182 +175,270 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="search-box">
-            <h2>Игра</h2>
-            <h1>Найдите в Белгороде</h1>
-            <h5 class="subtext">(bgdguessr)</h5>
-            <button id="start-btn">Начать игру</button>
-            <button id="info-btn">Информация</button>
-                <div id="info-popup" class="hidden">
-                    <h2>Информация о игре</h2>
-                    <h4>Правила:</h4>
-                    <p>У вас будет дано фото, вы должны на карте найти где оно сделано,<p>
-                    <p>вы ставите точку и нажимаете кнопку "Найти". Таких фото будет 5,</p>
-                    <p>после подводятся итоги игры.</p>
-                    <h4>Версия: Бета-тест 1.0</h4>
-                    <h4>В дальнейшем планируется:</h4>
-                    <p>Добавить больше фото (сейчас доступно всего 5 фото)</p>
-                    <p>Чтобы фото не могли повторяться</p>
-                    <p>Добавить лупу (чтобы лучше рассматривать фотографии)</p>
-                    <p>Адаптировать сайт на телефоне (сайт работает на телефоне, но не адаптирован)</p>
-                    <p>Добавить линейку между двумя точками</p>
-                    <p>Добавить сайту иконку</p>
-                    <p>Чтобы текст нельзя было копировать</p>
-                    <h4>Создатель:</h4>
-                    <p>SuBtItRi в <a href="https://t.me/SuBtItRi">Телеграмм</a>, <a href="https://vk.com/wolfzxc">Вконтакте</a></p>
-                    <button id="close-info-btn" class="hidden">Закрыть</button>
-                </div>
-            </div>
-        <div class="result-box hidden">
-            <img class="result-img" src="" alt="Результат">
-            <div class="indicator">
-                <span id="image-counter">1/5</span>
-                <span id="score-indicator">0/500</span>
-            </div>
-            <div id="score"></div>
-            <button id="find-btn" class="hidden">Найти</button>
-            <button id="next-btn" class="hidden">Следующее</button>
-            <button id="continue-btn" class="hidden">Продолжить</button>
+<div class="container">
+    <div class="search-box">
+        <h1>Найдите в Белгороде</h1>
+        <h5 class="subtext">(bgdguessr)</h5>
+        <h4>Версия: <span id="version"></span></h4>
+        <button id="start-btn">Начать игру</button>
+        <button id="info-btn">Информация</button>
+        <div id="info-popup" class="hidden">
+            <h2>Информация о игре</h2>
+            <h4>Правила:</h4>
+            <p>Вам будет дано фото, вы должны на карте найти где оно сделано, ставьте точку и нажимайте кнопку
+                "Найти". Таких фото будет 5, после подводятся итоги игры.</p>
+            <h3>Создатель: SuBtItRi в <a href="https://t.me/SuBtItRi">TG</a>, <a href="https://vk.com/wolfzxc">VK</a>
+            </h3>
+            <button id="close-info-btn" class="hidden">Закрыть</button>
         </div>
-        <div id="map" class="hidden"></div>
+        <button id="upd-btn">Список обновлений</button>
+        <div id="upd-popup" class="hidden">
+            <h2>Список обновлений</h2>
+            <div class="flex">
+                <div class="column" id="update-list"></div>
+                <div class="column" id="what-update"></div>
+            </div>
+            <button id="close-upd-btn" class="hidden">Закрыть</button>
+        </div>
     </div>
-    <div id="end-game-popup" class="hidden">
-        <h2>Итоги игры</h2>
-        <p>Ваш итоговый счет: <span id="final-score">0</span></p>
-        <button id="restart-btn" class="restart-btn">Начать заново</button>
+    <div class="result-box hidden">
+        <img class="result-img" src="" alt="Результат">
+        <div class="indicator">
+            <span id="image-counter">1/5</span>
+            <span id="score-indicator">0/500</span>
+        </div>
+        <div id="score"></div>
+        <button id="find-btn" class="hidden">Найти</button>
+        <button id="next-btn" class="hidden">Следующее</button>
+        <button id="continue-btn" class="hidden">Продолжить</button>
     </div>
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_ключ_апи&lang=ru_RU" type="text/javascript"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var imageCounter = 1;
-            var score = 0;
-            var found = false
-            var links = document.querySelectorAll('a'); // Находим все ссылки на странице
-            links.forEach(function(link) {
-                link.setAttribute('target', '_blank'); // Добавляем атрибут target="_blank"
-            });
-
-                document.getElementById('info-btn').addEventListener('click', function() {
-                    document.getElementById('info-popup').classList.remove('hidden');
-                    document.getElementById('close-info-btn').classList.remove('hidden');
-                });
-
-                document.getElementById('close-info-btn').addEventListener('click', function() {
-                    document.getElementById('info-popup').classList.add('hidden');
-                    document.getElementById('close-info-btn').classList.add('hidden');
-                });
-            document.getElementById('start-btn').addEventListener('click', function() {
-                document.body.style.backgroundImage = 'none';
-                document.body.style.backgroundColor = 'white';
-                document.querySelector('.search-box').classList.add('hidden');
-                document.querySelector('.result-box').classList.remove('hidden');
-                document.querySelector('#map').classList.remove('hidden');
-
-                var randomNum = Math.floor(Math.random() * 5) + 1;
-                var imgSrc = randomNum + '.png';
-                document.querySelector('.result-img').src = imgSrc;
-
-                ymaps.ready(init);
-
-                function init() {
-                    var myMap = new ymaps.Map('map', {
-                        center: [50.595414, 36.587277],
-                        zoom: 12,
-                        controls: [],
-                        type: 'yandex#hybrid'
-                    });
-
-                    myMap.events.add('click', function (e) {
-                        if (!found) {
-                            var coords = e.get('coords');
-
-                            if (myMap.geoObjects.getLength() > 0) {
-                                myMap.geoObjects.removeAll();
-                            }
-
-                            var placemark = new ymaps.Placemark(coords, {}, {
-                                preset: 'islands#greenDotIcon'
-                            });
-
-                            myMap.geoObjects.add(placemark);
-
-                            if (myMap.geoObjects.getLength() > 1) {
-                                var line = new ymaps.Polyline([
-                                    myMap.geoObjects.get(0).geometry.getCoordinates(),
-                                    myMap.geoObjects.get(1).geometry.getCoordinates()
-                                ], {}, {
-                                    strokeColor: '#ff0000',
-                                    strokeWidth: 2
-                                });
-                                myMap.geoObjects.add(line);
-                            }
-
-                            document.getElementById('find-btn').classList.remove('hidden');
-                        }
-                    });
-
-                    document.getElementById('find-btn').addEventListener('click', function() {
-                        if (!found) {
-                            fetch('coordinates.txt')
-                                .then(response => response.text())
-                                .then(data => {
-                                    var coordinates = data.trim().split('\n');
-                                    var redPointCoords = coordinates[randomNum - 1].split(',');
-
-                                    var redPlacemark = new ymaps.Placemark(redPointCoords, {}, {
-                                        preset: 'islands#redDotIcon'
-                                    });
-
-                                    myMap.geoObjects.add(redPlacemark);
-
-                                    var distance = ymaps.coordSystem.geo.getDistance(myMap.geoObjects.get(0).geometry.getCoordinates(), redPointCoords);
-                                    var scoreForRound = Math.max(0, Math.round((1000 - distance) / 10));
-                                    score += scoreForRound;
-
-                                    document.getElementById('score').innerText = 'У вас ' + scoreForRound + ' очков (' + distance.toFixed(2) + ' м до точки)';
-                                    document.getElementById('score-indicator').innerText = score + '/500';
-                                    document.getElementById('find-btn').classList.add('hidden');
-                                    document.getElementById('score').classList.remove('hidden');
-
-                                    if (imageCounter < 5) {
-                                        document.getElementById('next-btn').classList.remove('hidden');
-                                    } else {
-                                        document.getElementById('continue-btn').classList.remove('hidden');
-                                    }
-
-                                    found = true;
-                                })
-                                .catch(error => console.error('Ошибка при загрузке файла:', error));
-                        }
-                    });
-
-                    document.getElementById('next-btn').addEventListener('click', function() {
-                        imageCounter++;
-                        if (imageCounter <= 5) {
-                            document.getElementById('image-counter').innerText = imageCounter + '/5';
-                            document.getElementById('next-btn').classList.add('hidden');
-                            document.getElementById('score').classList.add('hidden');
-                            myMap.geoObjects.removeAll();
-                            randomNum = Math.floor(Math.random() * 5) + 1;
-                            imgSrc = randomNum + '.png';
-                            document.querySelector('.result-img').src = imgSrc;
-                            found = false;
-                        }
-                    });
-
-                    document.getElementById('continue-btn').addEventListener('click', function() {
-                        var endGamePopup = document.getElementById('end-game-popup');
-                        endGamePopup.classList.remove('hidden');
-                        document.getElementById('final-score').innerText = score;
-                    });
-
-                    document.getElementById('restart-btn').addEventListener('click', function() {
-                        location.reload();
-                    });
+    <div id="map" class="hidden"></div>
+</div>
+<div id="end-game-popup" class="hidden">
+    <h2>Итоги игры</h2>
+    <p>Ваш итоговый счет: <span id="final-score">0</span></p>
+    <button id="restart-btn" class="restart-btn">Начать заново</button>
+</div>
+<script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_ключ_апи&lang=ru_RU" type="text/javascript"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var imageCounter = 1;
+        var score = 0;
+        var found = false
+        var links = document.querySelectorAll('a'); // Находим все ссылки на странице
+        var updateListDiv = document.getElementById('update-list');
+        var whatUpdateDiv = document.getElementById('what-update');
+        // version
+        var v = new XMLHttpRequest();
+        v.onreadystatechange = function () {
+            if (v.readyState === XMLHttpRequest.DONE) {
+                if (v.status === 200) {
+                    var version = v.responseText.trim();
+                    document.getElementById('version').textContent = version;
+                } else {
+                    console.error('Ошибка загрузки версии:', v.status);
                 }
+            }
+        };
+        v.open('GET', 'version.txt', true);
+        v.send();
+        // update-list
+        var ul = new XMLHttpRequest();
+        ul.onreadystatechange = function () {
+            if (ul.readyState === XMLHttpRequest.DONE) {
+                if (ul.status === 200) {
+                    var updateList = ul.responseText.trim();
+                    formatUpdateList(updateList);
+                } else {
+                    console.error('Ошибка загрузки файла:', ul.status);
+                }
+            }
+        };
+        ul.open('GET', 'update-list.txt', true);
+        ul.send();
+
+        // Форматирование списка обновлений
+        function formatUpdateList(updateList) {
+            var updates = updateList.split(/\n(?=\d+\.\d+\.\d+)/); // Разделение на строки по версиям
+            var html = '';
+            updates.forEach(function (update) {
+                var parts = update.split(/\n/); // Разделение на версию и описание
+                var version = parts.shift(); // Первая строка - версия
+                var description = parts.join('<br>'); // Остальные строки - описание
+                html += '<h4>' + version + '</h4>'; // Форматирование версии
+                html += '<p>' + description + '</p>'; // Форматирование описания
             });
+            updateListDiv.innerHTML = html; // Вставка HTML на страницу
+        }
+
+        // what-update
+        var wu = new XMLHttpRequest();
+        wu.onreadystatechange = function () {
+            if (wu.readyState === XMLHttpRequest.DONE) {
+                if (wu.status === 200) {
+                    var whatUpdate = wu.responseText.trim();
+                    formatWhatUpdate(whatUpdate);
+                } else {
+                    console.error('Ошибка загрузки файла:', wu.status);
+                }
+            }
+        };
+        wu.open('GET', 'what-update.txt', true);
+        wu.send();
+
+        // Форматирование списка обновлений
+        function formatWhatUpdate(whatUpdate) {
+            var whatUpdates = whatUpdate.split(/\n(?=\d+\.\d+\.\d+)/); // Разделение на строки по версиям
+            var html = '';
+            whatUpdates.forEach(function (wgatUpdate) {
+                var wparts = whatUpdate.split(/\n/); // Разделение на версию и описание
+                var wversion = wparts.shift(); // Первая строка - версия
+                var wdescription = wparts.join('<br>'); // Остальные строки - описание
+                html += '<h4>' + wversion + '</h4>'; // Форматирование версии
+                html += '<p>' + wdescription + '</p>'; // Форматирование описания
+            });
+            whatUpdateDiv.innerHTML = html; // Вставка HTML на страницу
+        }
+
+        links.forEach(function (link) {
+            link.setAttribute('target', '_blank'); // Добавляем атрибут target="_blank"
         });
-    </script>
+        // Предотвращаем контекстное меню
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+
+        // Предотвращаем выделение текста
+        document.addEventListener('selectstart', function (e) {
+            e.preventDefault();
+        });
+        document.getElementById('info-btn').addEventListener('click', function () {
+            document.getElementById('info-popup').classList.remove('hidden');
+            document.getElementById('close-info-btn').classList.remove('hidden');
+        });
+        document.getElementById('close-info-btn').addEventListener('click', function () {
+            document.getElementById('info-popup').classList.add('hidden');
+            document.getElementById('close-info-btn').classList.add('hidden');
+        });
+        document.getElementById('upd-btn').addEventListener('click', function () {
+            document.getElementById('upd-popup').classList.remove('hidden');
+            document.getElementById('close-upd-btn').classList.remove('hidden');
+        });
+        document.getElementById('close-upd-btn').addEventListener('click', function () {
+            document.getElementById('upd-popup').classList.add('hidden');
+            document.getElementById('close-upd-btn').classList.add('hidden');
+        });
+        document.getElementById('start-btn').addEventListener('click', function () {
+            document.body.style.backgroundImage = 'none';
+            document.body.style.backgroundColor = 'white';
+            document.querySelector('.search-box').classList.add('hidden');
+            document.querySelector('.result-box').classList.remove('hidden');
+            document.querySelector('#map').classList.remove('hidden');
+
+            var randomNum = Math.floor(Math.random() * 5) + 1;
+            var imgSrc = randomNum + '.png';
+            document.querySelector('.result-img').src = imgSrc;
+
+            ymaps.ready(init);
+
+            function init() {
+                var myMap = new ymaps.Map('map', {
+                    center: [50.595414, 36.587277],
+                    zoom: 12,
+                    controls: [],
+                    type: 'yandex#hybrid'
+                });
+
+                myMap.events.add('click', function (e) {
+                    if (!found) {
+                        var coords = e.get('coords');
+
+                        if (myMap.geoObjects.getLength() > 0) {
+                            myMap.geoObjects.removeAll();
+                        }
+
+                        var placemark = new ymaps.Placemark(coords, {}, {
+                            preset: 'islands#greenDotIcon'
+                        });
+
+                        myMap.geoObjects.add(placemark);
+
+                        if (myMap.geoObjects.getLength() > 1) {
+                            var line = new ymaps.Polyline([
+                                myMap.geoObjects.get(0).geometry.getCoordinates(),
+                                myMap.geoObjects.get(1).geometry.getCoordinates()
+                            ], {}, {
+                                strokeColor: '#ff0000',
+                                strokeWidth: 2
+                            });
+                            myMap.geoObjects.add(line);
+                        }
+
+                        document.getElementById('find-btn').classList.remove('hidden');
+                    }
+                });
+
+                document.getElementById('find-btn').addEventListener('click', function () {
+                    if (!found) {
+                        fetch('coordinates.txt')
+                            .then(response => response.text())
+                            .then(data => {
+                                var coordinates = data.trim().split('\n');
+                                var redPointCoords = coordinates[randomNum - 1].split(',');
+
+                                var redPlacemark = new ymaps.Placemark(redPointCoords, {}, {
+                                    preset: 'islands#redDotIcon'
+                                });
+
+                                myMap.geoObjects.add(redPlacemark);
+
+                                var distance = ymaps.coordSystem.geo.getDistance(myMap.geoObjects.get(0).geometry.getCoordinates(), redPointCoords);
+                                var scoreForRound = Math.max(0, Math.round((1000 - distance) / 10));
+                                score += scoreForRound;
+
+                                document.getElementById('score').innerText = 'У вас ' + scoreForRound + ' очков (' + distance.toFixed(2) + 'м до точки)';
+                                document.getElementById('score-indicator').innerText = score + '/500';
+                                document.getElementById('find-btn').classList.add('hidden');
+                                document.getElementById('score').classList.remove('hidden');
+
+                                if (imageCounter < 5) {
+                                    document.getElementById('next-btn').classList.remove('hidden');
+                                } else {
+                                    document.getElementById('continue-btn').classList.remove('hidden');
+                                }
+
+                                found = true;
+                            })
+                            .catch(error => console.error('Ошибка при загрузке файла:', error));
+                    }
+                });
+
+                document.getElementById('next-btn').addEventListener('click', function () {
+                    imageCounter++;
+                    if (imageCounter <= 5) {
+                        document.getElementById('image-counter').innerText = imageCounter + '/5';
+                        document.getElementById('next-btn').classList.add('hidden');
+                        document.getElementById('score').classList.add('hidden');
+                        myMap.geoObjects.removeAll();
+                        randomNum = Math.floor(Math.random() * 5) + 1;
+                        imgSrc = randomNum + '.png';
+                        document.querySelector('.result-img').src = imgSrc;
+                        found = false;
+                    }
+                });
+
+                document.getElementById('continue-btn').addEventListener('click', function () {
+                    var endGamePopup = document.getElementById('end-game-popup');
+                    endGamePopup.classList.remove('hidden');
+                    document.getElementById('final-score').innerText = score;
+                });
+
+                document.getElementById('restart-btn').addEventListener('click', function () {
+                    location.reload();
+                });
+            }
+        });
+    });
+</script>
 </body>
 </html>
