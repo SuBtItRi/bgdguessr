@@ -1,1 +1,1 @@
-# subtitri.github.io/bgdguesser.html
+# subtitri.github.io/bgdguessr.html
