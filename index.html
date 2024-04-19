@@ -228,6 +228,24 @@
         var links = document.querySelectorAll('a'); // Находим все ссылки на странице
         var updateListDiv = document.getElementById('update-list');
         var whatUpdateDiv = document.getElementById('what-update');
+        // Создаем массив для хранения уже использованных чисел
+        var usedNumbers = [];
+        // Функция для генерации случайного числа
+        function getRandomNumber(min, max) {
+            // Генерируем случайное число
+            var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+
+            // Проверяем, было ли это число уже использовано
+            if (usedNumbers.includes(randomNumber)) {
+                // Если число уже использовано, генерируем новое рекурсивно
+                return getRandomNumber(min, max);
+            } else {
+                // Если число не использовалось, добавляем его в массив используемых чисел и возвращаем его
+                usedNumbers.push(randomNumber);
+                return randomNumber;
+            }
+        }
+
         // version
         var v = new XMLHttpRequest();
         v.onreadystatechange = function () {
@@ -334,8 +352,7 @@
             document.querySelector('.search-box').classList.add('hidden');
             document.querySelector('.result-box').classList.remove('hidden');
             document.querySelector('#map').classList.remove('hidden');
-
-            var randomNum = Math.floor(Math.random() * 5) + 1;
+            var randomNum = getRandomNumber(1, 5);
             var imgSrc = randomNum + '.png';
             document.querySelector('.result-img').src = imgSrc;
 
@@ -420,7 +437,7 @@
                         document.getElementById('next-btn').classList.add('hidden');
                         document.getElementById('score').classList.add('hidden');
                         myMap.geoObjects.removeAll();
-                        randomNum = Math.floor(Math.random() * 5) + 1;
+                        randomNum = getRandomNumber(1, 5);
                         imgSrc = randomNum + '.png';
                         document.querySelector('.result-img').src = imgSrc;
                         found = false;
