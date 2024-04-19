@@ -169,13 +169,13 @@
                     <p>У вас будет дано фото, вы должны на карте найти где оно сделано,<p>
                     <p>вы ставите точку и нажимаете кнопку "Найти". Таких фото будет 5,</p>
                     <p>после подводятся итоги игры.</p>
-                    <h4>Создатель:</h4>
-                    <p>SuBtItRi в <a href="https://t.me/SuBtItRi">Телеграмм</a>, <a href="https://vk.com/wolfzxc">Вконтакте</a></p>
                     <h4>Версия: Бета-тест 1.0</h4>
-                    <p>В дальнейшем планируется<p>
+                    <h4>В дальнейшем планируется:<h4>
                     <p>Добавить больше фото (сейчас доступно всего 5 фото)</p>
                     <p>Добавить лупу (чтобы лучше рассматривать фотографии)</p>
                     <p>Адаптировать сайт на телефоне (сайт работает на телефоне, но не адаптирован)</p>
+                    <h4>Создатель:</h4>
+                    <p>SuBtItRi в <a href="https://t.me/SuBtItRi">Телеграмм</a>, <a href="https://vk.com/wolfzxc">Вконтакте</a></p>
                     <button id="close-info-btn" class="hidden">Закрыть</button>
                 </div>
         </div>
@@ -225,7 +225,7 @@
                 document.querySelector('.result-box').classList.remove('hidden');
                 document.querySelector('#map').classList.remove('hidden');
 
-                var randomNum = Math.floor(Math.random() * 3) + 1;
+                var randomNum = Math.floor(Math.random() * 5) + 1;
                 var imgSrc = randomNum + '.png';
                 document.querySelector('.result-img').src = imgSrc;
 
@@ -310,7 +310,7 @@
                             document.getElementById('next-btn').classList.add('hidden');
                             document.getElementById('score').classList.add('hidden');
                             myMap.geoObjects.removeAll();
-                            randomNum = Math.floor(Math.random() * 3) + 1;
+                            randomNum = Math.floor(Math.random() * 5) + 1;
                             imgSrc = randomNum + '.png';
                             document.querySelector('.result-img').src = imgSrc;
                             found = false;
