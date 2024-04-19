@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-image: url('bg.png');
+            background-image: url('images/bg.png');
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -353,7 +353,7 @@
             document.querySelector('.result-box').classList.remove('hidden');
             document.querySelector('#map').classList.remove('hidden');
             var randomNum = getRandomNumber(1, 5);
-            var imgSrc = randomNum + '.png';
+            var imgSrc = 'images/' + randomNum + '.png';
             document.querySelector('.result-img').src = imgSrc;
 
             ymaps.ready(init);
@@ -438,7 +438,7 @@
                         document.getElementById('score').classList.add('hidden');
                         myMap.geoObjects.removeAll();
                         randomNum = getRandomNumber(1, 5);
-                        imgSrc = randomNum + '.png';
+                        imgSrc = "images/" + randomNum + '.png';
                         document.querySelector('.result-img').src = imgSrc;
                         found = false;
                     }
