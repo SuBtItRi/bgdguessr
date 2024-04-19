@@ -231,6 +231,7 @@
         var whatUpdateDiv = document.getElementById('what-update');
         // Создаем массив для хранения уже использованных чисел
         var usedNumbers = [];
+
         // Функция для генерации случайного числа
         function getRandomNumber(min, max) {
             // Генерируем случайное число
@@ -409,6 +410,24 @@
                                 });
 
                                 myMap.geoObjects.add(redPlacemark);
+
+                                // Получаем координаты зеленой точки (пользовательской точки)
+                                var userCoords = myMap.geoObjects.get(0).geometry.getCoordinates();
+
+                                // Получаем координаты красной точки (истинной точки)
+                                var trueCoords = redPointCoords;
+
+                                // Создаем полилинию, соединяющую эти точки
+                                var line = new ymaps.Polyline([
+                                    userCoords,
+                                    trueCoords
+                                ], {}, {
+                                    strokeColor: '#000000', // Цвет линии (зеленый)
+                                    strokeWidth: 5 // Толщина линии
+                                });
+
+                                // Добавляем полилинию на карту
+                                myMap.geoObjects.add(line);
 
                                 var distance = ymaps.coordSystem.geo.getDistance(myMap.geoObjects.get(0).geometry.getCoordinates(), redPointCoords);
                                 var scoreForRound = Math.max(0, Math.round((3000 - distance) / 30));
