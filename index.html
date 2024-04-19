@@ -19,6 +19,7 @@
             align-items: center;
             position: relative;
             overflow: hidden;
+            cursor: default;
         }
 
         .column {
@@ -187,7 +188,7 @@
             <h2>Информация о игре</h2>
             <h4>Правила:</h4>
             <p>Вам будет дано фото, вы должны на карте найти где оно сделано, ставьте точку и нажимайте кнопку
-                "Найти". Таких фото будет 5, после подводятся итоги игры.</p>
+                "Проверить". Таких фото будет 5, после подводятся итоги игры.</p>
             <h3>Создатель: SuBtItRi в <a href="https://t.me/SuBtItRi">TG</a>, <a href="https://vk.com/wolfzxc">VK</a>
             </h3>
             <button id="close-info-btn" class="hidden">Закрыть</button>
@@ -209,8 +210,8 @@
             <span id="score-indicator">0/500</span>
         </div>
         <div id="score"></div>
-        <button id="find-btn" class="hidden">Найти</button>
-        <button id="next-btn" class="hidden">Следующее</button>
+        <button id="find-btn" class="hidden">Проверить</button>
+        <button id="next-btn" class="hidden">Далее</button>
         <button id="continue-btn" class="hidden">Продолжить</button>
     </div>
     <div id="map" class="hidden"></div>
@@ -429,11 +430,11 @@
                                 // Добавляем полилинию на карту
                                 myMap.geoObjects.add(line);
 
-                                var distance = ymaps.coordSystem.geo.getDistance(myMap.geoObjects.get(0).geometry.getCoordinates(), redPointCoords);
+                                var distance = Math.round(ymaps.coordSystem.geo.getDistance(myMap.geoObjects.get(0).geometry.getCoordinates(), redPointCoords));
                                 var scoreForRound = Math.max(0, Math.round((3000 - distance) / 30));
                                 score += scoreForRound;
 
-                                document.getElementById('score').innerText = 'У вас ' + scoreForRound + ' очков (' + distance.toFixed(2) + 'м до точки)';
+                                document.getElementById('score').innerText = 'За эту точку вы получили ' + scoreForRound + ' очков (' + distance + 'м до точки)';
                                 document.getElementById('score-indicator').innerText = score + '/500';
                                 document.getElementById('find-btn').classList.add('hidden');
                                 document.getElementById('score').classList.remove('hidden');
