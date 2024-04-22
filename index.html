@@ -61,6 +61,23 @@
             background-color: darkgreen;
         }
 
+        #toggle-btn {
+            position: absolute;
+            color: white;
+            border: none;
+            padding: 1px 1px;
+            font-size: 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            z-index: 9999;
+            left: 5px;
+            top: 5px;
+        }
+
+        #toggle-btn:hover {
+            background-color: #d5d5d5;
+        }
+
         #find-btn, #next-btn, #continue-btn {
             background-color: green;
             color: white;
@@ -113,7 +130,6 @@
             color: white;
             border: none;
             padding: 10px 20px;
-            cursor: pointer;
         }
 
         #score {
@@ -122,7 +138,6 @@
             color: #1a40ff;
             border: none;
             padding: 10px 20px;
-            cursor: pointer;
         }
 
         #image-counter {
@@ -216,7 +231,9 @@
         <button id="next-btn" class="hidden">Далее</button>
         <button id="continue-btn" class="hidden">Продолжить</button>
     </div>
-    <div id="map" class="hidden"></div>
+    <div id="map" class="hidden">
+        <button id="toggle-btn" class="hidden">🔉</button>
+    </div>
 </div>
 <div id="end-game-popup" class="hidden">
     <h2>Итоги игры</h2>
@@ -226,6 +243,9 @@
 <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_ключ_апи&lang=ru_RU" type="text/javascript"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        var audio = new Audio('music.mp3');
+        audio.loop = true; // Чтобы музыка повторялась
+        var vl = 1;
         var imageCounter = 1;
         var score = 0;
         var found = false
@@ -234,6 +254,28 @@
         var whatUpdateDiv = document.getElementById('what-update');
         // Создаем массив для хранения уже использованных чисел
         var usedNumbers = [];
+        document.getElementById('toggle-btn').addEventListener('click', function () {
+            vl = (vl+1)%4;
+            switch (vl) {
+                case 3:
+                    audio.pause();
+                    document.getElementById('toggle-btn').innerText = '🔇'
+                    break;
+                case 2:
+                    audio.volume = 0.1;
+                    document.getElementById('toggle-btn').innerText = '🔈 '
+                    break;
+                case 1:
+                    audio.volume = 0.25;
+                    document.getElementById('toggle-btn').innerText = '🔉'
+                    break;
+                case 0:
+                    audio.play()
+                    audio.volume = 0.5;
+                    document.getElementById('toggle-btn').innerText = '🔊'
+                    break;
+            }
+        });
 
         // Функция для генерации случайного числа
         function getRandomNumber(min, max) {
@@ -357,9 +399,11 @@
             document.querySelector('.search-box').classList.add('hidden');
             document.querySelector('.result-box').classList.remove('hidden');
             document.querySelector('#map').classList.remove('hidden');
+            document.getElementById('toggle-btn').classList.remove('hidden');
             var randomNum = getRandomNumber(1, 25);
             var imgSrc = 'images/' + randomNum + '.png';
             document.querySelector('.result-img').src = imgSrc;
+            audio.play();
 
             ymaps.ready(init);
 
