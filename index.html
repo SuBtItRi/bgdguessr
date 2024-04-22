@@ -245,6 +245,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         var audio = new Audio('music.mp3');
         audio.loop = true; // Чтобы музыка повторялась
+        audio.volume = 0.1;
         var vl = 1;
         var imageCounter = 1;
         var score = 0;
@@ -262,16 +263,16 @@
                     document.getElementById('toggle-btn').innerText = '🔇'
                     break;
                 case 2:
-                    audio.volume = 0.1;
+                    audio.volume = 0.05;
                     document.getElementById('toggle-btn').innerText = '🔈 '
                     break;
                 case 1:
-                    audio.volume = 0.25;
+                    audio.volume = 0.1;
                     document.getElementById('toggle-btn').innerText = '🔉'
                     break;
                 case 0:
                     audio.play()
-                    audio.volume = 0.5;
+                    audio.volume = 0.3;
                     document.getElementById('toggle-btn').innerText = '🔊'
                     break;
             }
