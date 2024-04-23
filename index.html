@@ -40,20 +40,73 @@
             line-height: 0.5;
         }
 
-        #start-btn, #info-btn, #close-info-btn, #upd-btn, #close-upd-btn, #restart-btn {
-            background-color: green;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
+        .click-btn {
+            justify-content: center;
+            align-items: center;
+            margin: 0.5rem;
+            line-height: 35px;
+            border: 1px solid;
             border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            text-decoration: none;
+            transition: all 0.35s;
+            box-sizing: border-box;
             cursor: pointer;
-            margin-top: 10px;
-            bottom: 0;
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            font-weight: 700;
         }
 
-        #start-btn:hover, #info-btn:hover, #close-info-btn:hover, #upd-btn:hover, #close-upd-btn:hover, #restart-btn:hover {
-            background-color: darkgreen;
+        .btn {
+            background-image: linear-gradient(to right, #52b69a 0%, #76c893 51%, #52b69a 100%);
+            background-size: 200% auto;
+            background-position: left top;
+            border-color: transparent;
+            color: white;
+            position: relative;
+        }
+
+        .btn:hover {
+            background-position: right bottom;
+            color: springgreen;
+            border-color: mediumspringgreen;
+
+            &::before {
+                width: 100%;
+                border-width: 1px 0 1px 0;
+            }
+
+            &::after {
+                height: 100%;
+                border-width: 0 1px 0 1px;
+            }
+        }
+
+        .btn::before,
+        .btn::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 5px;
+            border-style: solid;
+            transition: all 0.35s;
+            content: "";
+            z-index: 1;
+        }
+
+        .btn::before {
+            width: 0;
+            height: 100%;
+            border-color: mediumspringgreen;
+            border-width: 1px 0 1px 0;
+        }
+
+        .btn::after {
+            width: 100%;
+            height: 0;
+            border-color: mediumspringgreen;
+            border-width: 0 1px 0 1px;
         }
 
         #toggle-btn {
@@ -73,21 +126,96 @@
             background-color: #d5d5d5;
         }
 
-        #find-btn, #next-btn, #continue-btn {
-            background-color: green;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 24px;
-            cursor: pointer;
-            width: 100%;
+        .find-wrap {
+            align-items: center;
+            justify-content: center;
             position: absolute;
-            right: 0;
-            bottom: 0;
+            left: 15%;
+            bottom: 5%;
         }
 
-        #find-btn:hover, #next-btn:hover, #continue-btn:hover {
-            background-color: darkgreen;
+        .nc-wrap {
+            position: absolute;
+            justify-content: center;
+            bottom: 5%;
+            left: 65%;
+        }
+
+        .game-btn {
+            min-width: 300px;
+            min-height: 60px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 22px;
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            font-weight: 700;
+            color: #313133;
+            background: #4FD1C5;
+            background: linear-gradient(90deg, rgba(129, 230, 217, 1) 0%, rgba(79, 209, 197, 1) 100%);
+            border: none;
+            border-radius: 1000px;
+            box-shadow: 12px 12px 24px rgba(79, 209, 197, .64);
+            transition: all 0.3s ease-in-out 0s;
+            cursor: pointer;
+            outline: none;
+            position: relative;
+            padding: 10px;
+        }
+
+        .game-btn::before {
+            content: '';
+            border-radius: 1000px;
+            min-width: calc(300px + 12px);
+            min-height: calc(60px + 12px);
+            border: 6px solid #00FFCB;
+            box-shadow: 0 0 60px rgba(0, 255, 203, .64);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: all .3s ease-in-out 0s;
+        }
+
+        .game-btn:hover, .game-btn:focus {
+            color: #313133;
+            transform: translateY(-6px);
+        }
+
+        .game-btn:hover::before, .game-btn:focus::before {
+            opacity: 1;
+        }
+
+        .game-btn::after {
+            content: '';
+            width: 30px;
+            height: 30px;
+            border-radius: 100%;
+            border: 6px solid #00FFCB;
+            position: absolute;
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: ring 1.5s infinite;
+        }
+
+        .game-btn:hover::after, .game-btn:focus::after {
+            animation: none;
+            display: none;
+        }
+
+        @keyframes ring {
+            0% {
+                width: 30px;
+                height: 30px;
+                opacity: 1;
+            }
+            100% {
+                width: 300px;
+                height: 300px;
+                opacity: 0;
+            }
         }
 
         .hidden {
@@ -120,20 +248,28 @@
         }
 
         .indicator {
+            font-family: 'Nunito', sans-serif;
             margin-top: -5px;
             font-size: 24px;
-            background-color: #1a40ff;
-            color: white;
+            background-color: #4FD1C5;
             border: none;
             padding: 10px 20px;
+            color: #313133;
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            font-weight: 700;
         }
 
         #score {
-            margin-top: 10%;
+            font-family: 'Nunito', sans-serif;
+            margin-top: 0;
             font-size: 24px;
-            color: #1a40ff;
             border: none;
             padding: 10px 20px;
+            color: #313133;
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            font-weight: 700;
         }
 
         #image-counter {
@@ -153,6 +289,7 @@
             padding: 20px;
             border-radius: 10px;
             z-index: 999;
+            text-align: center;
         }
 
         #upd-popup {
@@ -203,10 +340,10 @@
     <div class="search-box">
         <img class="logo" src="images/logo.png" alt="Логотип">
         <h4>Версия: <span id="version"></span></h4>
-        <button id="start-btn">Начать игру</button>
-        <button id="info-btn">Информация</button>
+        <button id="start-btn" class="click-btn btn">Начать игру</button>
+        <button id="info-btn" class="click-btn btn">Информация</button>
         <div id="info-popup" class="hidden">
-            <h2>Информация о игре</h2>
+            <h2>Информация об игре</h2>
             <h4>Правила:</h4>
             <p>Вам будет дано фото, вы должны на карте найти где оно сделано, ставьте точку и нажимайте кнопку
                 "Проверить". Таких фото будет 5, после подводятся итоги игры.</p>
@@ -214,9 +351,9 @@
             <p>BGDGUESSR = Bgd guessr = Belgorod guess = Угадай Белгород</p>
             <h3>Создатель: SuBtItRi в <a href="https://t.me/SuBtItRi">TG</a>, <a href="https://vk.com/wolfzxc">VK</a>
             </h3>
-            <button id="close-info-btn" class="hidden">Закрыть</button>
+            <button id="close-info-btn" class="click-btn btn hidden">Закрыть</button>
         </div>
-        <button id="upd-btn">Список обновлений</button>
+        <button id="upd-btn" class="click-btn btn">Список обновлений</button>
         <div id="upd-popup" class="hidden">
             <h2>Список обновлений</h2>
             <div id="add-upd-popup">
@@ -225,7 +362,7 @@
                     <div class="column" id="what-update"></div>
                 </div>
             </div>
-            <button id="close-upd-btn" class="hidden">Закрыть</button>
+            <button id="close-upd-btn" class="click-btn btn hidden">Закрыть</button>
         </div>
     </div>
     <div class="result-box hidden">
@@ -235,16 +372,22 @@
             <span id="score-indicator">0/500</span>
         </div>
         <div id="score"></div>
-        <button id="find-btn" class="hidden">Проверить</button>
-        <button id="next-btn" class="hidden">Далее</button>
-        <button id="continue-btn" class="hidden">Продолжить</button>
+        <div class="find-wrap">
+            <button id="find-btn" class="game-btn hidden">Проверить</button>
+        </div>
+        <div class="nc-wrap">
+            <button id="next-btn" class="game-btn">
+                <span>Пропустить</span>
+            </button>
+            <button id="continue-btn" class="game-btn hidden">Продолжить</button>
+        </div>
     </div>
     <div id="map" class="hidden"></div>
 </div>
 <div id="end-game-popup" class="hidden">
-    <h2>Итоги игры</h2>
-    <p>Ваш итоговый счет: <span id="final-score">0</span></p>
-    <button id="restart-btn" class="restart-btn">Начать заново</button>
+    <h1>Итоги игры</h1>
+    <h2>Ваш итоговый счет: <br><span id="final-score">0</span></h2>
+    <button id="restart-btn" class="click-btn btn">Начать заново</button>
 </div>
 <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_ключ_апи&lang=ru_RU" type="text/javascript"></script>
 <script>
@@ -387,7 +530,7 @@
         });
         document.getElementById('start-btn').addEventListener('click', function () {
             document.body.style.backgroundImage = 'none';
-            document.body.style.backgroundColor = 'white';
+            document.body.style.backgroundColor = 'whitesmoke';
             document.querySelector('.search-box').classList.add('hidden');
             document.querySelector('.result-box').classList.remove('hidden');
             document.querySelector('#map').classList.remove('hidden');
@@ -477,10 +620,12 @@
                                 document.getElementById('score-indicator').innerText = score + '/500';
                                 document.getElementById('find-btn').classList.add('hidden');
                                 document.getElementById('score').classList.remove('hidden');
+                                document.getElementById('next-btn').innerText = 'Далее';
 
                                 if (imageCounter < 5) {
                                     document.getElementById('next-btn').classList.remove('hidden');
                                 } else {
+                                    document.getElementById('next-btn').classList.add('hidden')
                                     document.getElementById('continue-btn').classList.remove('hidden');
                                 }
 
@@ -494,13 +639,17 @@
                     imageCounter++;
                     if (imageCounter <= 5) {
                         document.getElementById('image-counter').innerText = imageCounter + '/5';
-                        document.getElementById('next-btn').classList.add('hidden');
                         document.getElementById('score').classList.add('hidden');
+                        document.getElementById('find-btn').classList.add('hidden')
+                        document.getElementById('next-btn').innerText = 'Пропустить';
                         myMap.geoObjects.removeAll();
                         randomNum = getRandomNumber(1, 25);
                         imgSrc = "images/" + randomNum + '.png';
                         document.querySelector('.result-img').src = imgSrc;
                         found = false;
+                    } else {
+                        document.getElementById('next-btn').classList.add('hidden')
+                        document.getElementById('continue-btn').classList.remove('hidden')
                     }
                 });
 
