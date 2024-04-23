@@ -162,8 +162,8 @@
 
         #toggle-btn {
             position: absolute;
-            color: white;
             border: none;
+            background: none;
             padding: 1px 1px;
             font-size: 30px;
             border-radius: 25px;
@@ -171,10 +171,6 @@
             z-index: 9999;
             left: 15px;
             top: 15px;
-        }
-
-        #toggle-btn:hover {
-            background-color: #d5d5d5;
         }
 
         .find-wrap {
@@ -445,8 +441,8 @@
     document.addEventListener('DOMContentLoaded', function () {
         var audio = new Audio('music.mp3');
         audio.loop = true; // Чтобы музыка повторялась
-        audio.volume = 0.1;
-        var vl = 3;
+        audio.pause();
+        var vl = 0;
         var imageCounter = 1;
         var score = 0;
         var found = false
@@ -456,25 +452,56 @@
         // Создаем массив для хранения уже использованных чисел
         var usedNumbers = [];
         document.getElementById('toggle-btn').addEventListener('click', function () {
-            vl = (vl + 1) % 4;
-            switch (vl) {
-                case 3:
-                    audio.pause();
-                    document.getElementById('toggle-btn').innerText = '🔇'
-                    break;
-                case 2:
-                    audio.volume = 0.05;
-                    document.getElementById('toggle-btn').innerText = '🔈 '
-                    break;
-                case 1:
-                    audio.volume = 0.1;
-                    document.getElementById('toggle-btn').innerText = '🔉'
-                    break;
-                case 0:
-                    audio.play()
-                    audio.volume = 0.3;
-                    document.getElementById('toggle-btn').innerText = '🔊'
-                    break;
+            vl++;
+            if (vl === 0) {
+                audio.pause();
+                document.getElementById('toggle-btn').innerText = '🔇'
+            }
+            if (vl === 1) {
+                audio.play()
+                audio.volume = 0.05;
+                document.getElementById('toggle-btn').innerText = '🔈 '
+            }
+            if (vl === 2) {
+                audio.play()
+                audio.volume = 0.1;
+                document.getElementById('toggle-btn').innerText = '🔉'
+            }
+            if (vl === 3) {
+                audio.play()
+                audio.volume = 0.3;
+                document.getElementById('toggle-btn').innerText = '🔊'
+            }
+            if (vl > 3) {
+                vl = -1;
+            }
+        });
+
+        document.getElementById('toggle-btn').addEventListener("contextmenu", function (event) {
+            event.preventDefault();
+            vl--;
+            if (vl <= 0) {
+                audio.pause();
+                document.getElementById('toggle-btn').innerText = '🔇'
+                vl = 4;
+            }
+            if (vl === 1) {
+                audio.play()
+                audio.volume = 0.05;
+                document.getElementById('toggle-btn').innerText = '🔈 '
+            }
+            if (vl === 2) {
+                audio.play()
+                audio.volume = 0.1;
+                document.getElementById('toggle-btn').innerText = '🔉'
+            }
+            if (vl === 3) {
+                audio.play()
+                audio.volume = 0.3;
+                document.getElementById('toggle-btn').innerText = '🔊'
+            }
+            if (vl < 0) {
+                vl = 4;
             }
         });
 
@@ -586,7 +613,7 @@
             document.querySelector('.result-box').classList.remove('hidden');
             document.querySelector('#map').classList.remove('hidden');
             document.getElementById('toggle-btn').innerText = '🔉'
-            vl = 1;
+            vl = 2;
             var randomNum = getRandomNumber(1, 25);
             var imgSrc = 'images/' + randomNum + '.png';
             document.querySelector('.result-img').src = imgSrc;
