@@ -427,8 +427,8 @@
             "Проверить". Таких фото будет 5, после подводятся итоги игры.</p>
         <h4>Почему BGDGUESSR?</h4>
         <p>BGDGUESSR = Bgd guessr = Belgorod guess = Угадай Белгород</p>
-        <h3>Создатель: SuBtItRi в <a href="https://t.me/SuBtItRi">TG</a>, <a href="https://vk.com/wolfzxc">VK</a>
-        </h3>
+        <h3>Создатель: SuBtItRi в <a href="https://t.me/SuBtItRi">TG</a>, <a href="https://vk.com/wolfzxc">VK</a></h3>
+        <!-- <h3>Сделал часть точек: Ugrock в <a href="https://t.me/ugrock78">TG</a></h3> -->
         <button id="close-info-btn" class="click-btn close-btn hidden">Закрыть</button>
     </div>
     <div id="upd-popup" class="hidden">
@@ -739,18 +739,15 @@
                                 document.getElementById('find-btn').classList.add('hidden');
                                 document.getElementById('score').classList.remove('hidden');
                                 document.getElementById('next-btn').innerText = 'Далее';
-
-                                if (imageCounter < 5) {
-                                    document.getElementById('next-btn').classList.remove('hidden');
-                                } else {
-                                    document.getElementById('next-btn').classList.add('hidden')
-                                    document.getElementById('continue-btn').classList.remove('hidden');
-                                }
-
                                 document.getElementById('next-btn').classList.add('hidden')
                                 setTimeout(() => {
                                     document.getElementById('score').classList.add('hidden')
-                                    document.getElementById('next-btn').classList.remove('hidden')
+                                    if (imageCounter < 5) {
+                                        document.getElementById('next-btn').classList.remove('hidden');
+                                    } else {
+                                        document.getElementById('next-btn').classList.add('hidden')
+                                        document.getElementById('continue-btn').classList.remove('hidden');
+                                    }
                                 }, 5000);
 
 
@@ -774,10 +771,10 @@
                         found = false;
                     } else {
                         document.getElementById('next-btn').classList.add('hidden')
-                                setTimeout(() => {
-                                    document.getElementById('score').classList.add('hidden')
-                                    document.getElementById('continue-btn').classList.remove('hidden')
-                                }, 5000);
+                        setTimeout(() => {
+                            document.getElementById('score').classList.add('hidden')
+                            document.getElementById('continue-btn').classList.remove('hidden')
+                        }, 5000);
                     }
                 });
 
