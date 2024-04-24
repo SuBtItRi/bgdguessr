@@ -774,7 +774,10 @@
                         found = false;
                     } else {
                         document.getElementById('next-btn').classList.add('hidden')
-                        document.getElementById('continue-btn').classList.remove('hidden')
+                                setTimeout(() => {
+                                    document.getElementById('score').classList.add('hidden')
+                                    document.getElementById('continue-btn').classList.remove('hidden')
+                                }, 5000);
                     }
                 });
 
