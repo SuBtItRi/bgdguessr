@@ -420,27 +420,27 @@
         <button id="info-btn" class="click-btn btn">Информация</button>
         <button id="upd-btn" class="click-btn btn">Список обновлений</button>
     </div>
-        <div id="info-popup" class="hidden">
-            <h2>Информация об игре</h2>
-            <h4>Правила:</h4>
-            <p>Вам будет дано фото, вы должны на карте найти где оно сделано, ставьте точку и нажимайте кнопку
-                "Проверить". Таких фото будет 5, после подводятся итоги игры.</p>
-            <h4>Почему BGDGUESSR?</h4>
-            <p>BGDGUESSR = Bgd guessr = Belgorod guess = Угадай Белгород</p>
-            <h3>Создатель: SuBtItRi в <a href="https://t.me/SuBtItRi">TG</a>, <a href="https://vk.com/wolfzxc">VK</a>
-            </h3>
-            <button id="close-info-btn" class="click-btn close-btn hidden">Закрыть</button>
-        </div>
-        <div id="upd-popup" class="hidden">
-            <h2>Список обновлений</h2>
-            <div id="add-upd-popup">
-                <div class="flex">
-                    <div class="column" id="update-list"></div>
-                    <div class="column" id="what-update"></div>
-                </div>
+    <div id="info-popup" class="hidden">
+        <h2>Информация об игре</h2>
+        <h4>Правила:</h4>
+        <p>Вам будет дано фото, вы должны на карте найти где оно сделано, ставьте точку и нажимайте кнопку
+            "Проверить". Таких фото будет 5, после подводятся итоги игры.</p>
+        <h4>Почему BGDGUESSR?</h4>
+        <p>BGDGUESSR = Bgd guessr = Belgorod guess = Угадай Белгород</p>
+        <h3>Создатель: SuBtItRi в <a href="https://t.me/SuBtItRi">TG</a>, <a href="https://vk.com/wolfzxc">VK</a>
+        </h3>
+        <button id="close-info-btn" class="click-btn close-btn hidden">Закрыть</button>
+    </div>
+    <div id="upd-popup" class="hidden">
+        <h2>Список обновлений</h2>
+        <div id="add-upd-popup">
+            <div class="flex">
+                <div class="column" id="update-list"></div>
+                <div class="column" id="what-update"></div>
             </div>
-            <button id="close-upd-btn" class="click-btn close-btn hidden">Закрыть</button>
         </div>
+        <button id="close-upd-btn" class="click-btn close-btn hidden">Закрыть</button>
+    </div>
     <div class="result-box hidden">
         <img class="result-img" src="" alt="Результат">
         <div class="indicator">
@@ -746,6 +746,13 @@
                                     document.getElementById('next-btn').classList.add('hidden')
                                     document.getElementById('continue-btn').classList.remove('hidden');
                                 }
+
+                                document.getElementById('next-btn').classList.add('hidden')
+                                setTimeout(() => {
+                                    document.getElementById('score').classList.add('hidden')
+                                    document.getElementById('next-btn').classList.remove('hidden')
+                                }, 5000);
+
 
                                 found = true;
                             })
