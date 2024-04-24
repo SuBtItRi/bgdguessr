@@ -350,7 +350,7 @@
 
         #info-popup, #end-game-popup {
             position: absolute;
-            top: 50%;
+            top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: rgba(255, 255, 255);
@@ -358,22 +358,24 @@
             border-radius: 10px;
             z-index: 999;
             text-align: center;
+            width: 90%;
         }
 
         #upd-popup {
             position: absolute;
-            top: 50%;
+            top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: rgba(255, 255, 255);
             padding: 20px;
             border-radius: 10px;
             z-index: 999;
+            width: 90%;
             height: 65%;
         }
 
         #add-upd-popup {
-            height: 87%;
+            height: 82%;
             overflow-y: scroll;
         }
 
@@ -415,6 +417,8 @@
         <h4>Версия: <span id="version"></span></h4>
         <button id="start-btn" class="click-btn btn">Начать игру</button>
         <button id="info-btn" class="click-btn btn">Информация</button>
+        <button id="upd-btn" class="click-btn btn">Список обновлений</button>
+    </div>
         <div id="info-popup" class="hidden">
             <h2>Информация об игре</h2>
             <h4>Правила:</h4>
@@ -426,7 +430,6 @@
             </h3>
             <button id="close-info-btn" class="click-btn close-btn hidden">Закрыть</button>
         </div>
-        <button id="upd-btn" class="click-btn btn">Список обновлений</button>
         <div id="upd-popup" class="hidden">
             <h2>Список обновлений</h2>
             <div id="add-upd-popup">
@@ -437,7 +440,6 @@
             </div>
             <button id="close-upd-btn" class="click-btn close-btn hidden">Закрыть</button>
         </div>
-    </div>
     <div class="result-box hidden">
         <img class="result-img" src="" alt="Результат">
         <div class="indicator">
@@ -626,18 +628,22 @@
         document.getElementById('info-btn').addEventListener('click', function () {
             document.getElementById('info-popup').classList.remove('hidden');
             document.getElementById('close-info-btn').classList.remove('hidden');
+            document.querySelector('.search-box').classList.add('hidden');
         });
         document.getElementById('close-info-btn').addEventListener('click', function () {
             document.getElementById('info-popup').classList.add('hidden');
             document.getElementById('close-info-btn').classList.add('hidden');
+            document.querySelector('.search-box').classList.remove('hidden');
         });
         document.getElementById('upd-btn').addEventListener('click', function () {
             document.getElementById('upd-popup').classList.remove('hidden');
             document.getElementById('close-upd-btn').classList.remove('hidden');
+            document.querySelector('.search-box').classList.add('hidden');
         });
         document.getElementById('close-upd-btn').addEventListener('click', function () {
             document.getElementById('upd-popup').classList.add('hidden');
             document.getElementById('close-upd-btn').classList.add('hidden');
+            document.querySelector('.search-box').classList.remove('hidden');
         });
         document.getElementById('start-btn').addEventListener('click', function () {
             document.body.style.backgroundImage = 'none';
