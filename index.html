@@ -5,7 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Поиск по Белгороду</title>
     <link rel="icon" href="images/logo.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <style>
+        #warning-message {
+            display: none;
+        }
+
+        @media only screen and (orientation: portrait) {
+            #main {
+                display: none;
+            }
+
+            #warning-message {
+                display: block;
+            }
+        }
+
+        @media only screen and (orientation: landscape) {
+            #warning-message {
+                display: none;
+            }
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -177,7 +198,7 @@
             align-items: center;
             justify-content: center;
             position: absolute;
-            left: 15%;
+            left: 22.5%;
             bottom: 5%;
         }
 
@@ -185,7 +206,7 @@
             position: absolute;
             justify-content: center;
             bottom: 5%;
-            left: 65%;
+            left: 52.5%;
         }
 
         .game-btn {
@@ -382,7 +403,7 @@
     </style>
 </head>
 <body>
-<div class="container">
+<div id="main" class="container">
     <button id="toggle-btn">🔇</button>
     <div class="search-box">
         <img class="logo" src="images/logo.png" alt="Логотип">
@@ -436,12 +457,19 @@
     <h2>Ваш итоговый счет: <br><span id="final-score">0</span></h2>
     <button id="restart-btn" class="click-btn btn">Начать заново</button>
 </div>
+<div id="warning-message" class="container">
+    <div class="search-box">
+        <img class="logo" src="images/logo.png" alt="Логотип">
+        <h1>На телефоне сайт работает <br><br>только в горизонтальном положении,<br><br> переверните телефон</h1>
+    </div>
+</div>
 <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_ключ_апи&lang=ru_RU" type="text/javascript"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var audio = new Audio('music.mp3');
         audio.loop = true; // Чтобы музыка повторялась
         audio.pause();
+        var pointCount = 25;
         var vl = 0;
         var imageCounter = 1;
         var score = 0;
@@ -520,6 +548,7 @@
                 return randomNumber;
             }
         }
+
         // update-list
         var ul = new XMLHttpRequest();
         ul.onreadystatechange = function () {
@@ -613,7 +642,7 @@
             document.querySelector('#map').classList.remove('hidden');
             document.getElementById('toggle-btn').innerText = '🔉'
             vl = 2;
-            var randomNum = getRandomNumber(1, 25);
+            var randomNum = getRandomNumber(1, pointCount);
             var imgSrc = 'images/' + randomNum + '.png';
             document.querySelector('.result-img').src = imgSrc;
             audio.play();
@@ -720,7 +749,7 @@
                         document.getElementById('find-btn').classList.add('hidden')
                         document.getElementById('next-btn').innerText = 'Пропустить';
                         myMap.geoObjects.removeAll();
-                        randomNum = getRandomNumber(1, 25);
+                        randomNum = getRandomNumber(1, pointCount);
                         imgSrc = "images/" + randomNum + '.png';
                         document.querySelector('.result-img').src = imgSrc;
                         found = false;
