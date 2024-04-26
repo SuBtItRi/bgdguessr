@@ -62,6 +62,13 @@
             line-height: 0.5;
         }
 
+        .start-game-popup {
+            background-color: rgba(255, 255, 255);
+            padding: 20px;
+            border-radius: 10px;
+            line-height: 0.5;
+        }
+
         .click-btn {
             justify-content: center;
             align-items: center;
@@ -395,6 +402,18 @@
             text-decoration: blink; /* Подчеркивание текста ссылки */
         }
 
+        .yt {
+            color: red;
+        }
+
+        .yt:hover {
+            color: #d80000;
+        }
+
+        .vk {
+            color: dodgerblue;
+        }
+
         a:hover {
             color: #007bc6; /* Цвет текста ссылки при наведении */
         }
@@ -408,6 +427,93 @@
             height: auto;
         }
 
+        .start-popup {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .start {
+            margin-top: 10%;
+        }
+
+        .start:hover + .start-popup {
+            display: block;
+        }
+
+        .slider-container {
+            position: relative;
+        }
+
+        .tick-labels {
+            position: absolute;
+            width: 107%;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            top: 15px; /* Положение сверху */
+            color: #313133;
+            text-transform: uppercase;
+            right: -3%;
+        }
+
+        .tick-labels.bottom {
+            top: calc(100% + 5px); /* Положение снизу */
+            width: 107%;
+            right: -5%;
+        }
+
+        .slider {
+            margin-top: 30px;
+            -webkit-appearance: none;
+            width: 100%;
+            height: 25px;
+            border-radius: 12px; /* Скругление углов */
+            background: linear-gradient(to right, #32a852 0%, #ffec06 50%, #d9534f 100%);
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 100%;
+            background: #000000;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 26px;
+            height: 26px;
+            border-radius: 100%;
+            background: #000000;
+            cursor: pointer;
+        }
+
+        #timer {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #4FD1C5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
     </style>
 </head>
 <body>
@@ -420,6 +526,34 @@
         <button id="info-btn" class="click-btn btn">Информация</button>
         <button id="upd-btn" class="click-btn btn">Список обновлений</button>
     </div>
+    <div class="start-game-popup hidden">
+        <h1>      Тайм менеджмент       </h1>
+        <div class="slider-container">
+            <div class="tick-labels top">
+                <span>Ꝏсек</span>
+                <span>35сек</span>
+                <span>30сек</span>
+                <span>25сек</span>
+                <span>20сек</span>
+                <span>15сек</span>
+                <span>10сек</span>
+                <span>5сек</span>
+            </div>
+            <input type="range" min="1" max="8" value="0" class="slider" id="myRange">
+            <div class="tick-labels bottom">
+                <span>10 оч.</span>
+                <span>50 оч.</span>
+                <span>60 оч.</span>
+                <span>70 оч.</span>
+                <span>80 оч.</span>
+                <span>90 оч.</span>
+                <span>100 оч.</span>
+                <span>200 оч.</span>
+            </div>
+        </div>
+        <button id="start-game" class="click-btn start btn">Начать</button>
+        <div class="start-popup">Сначала выберете время выделенное на точку</div>
+    </div>
     <div id="info-popup" class="hidden">
         <h2>Информация об игре</h2>
         <h4>Правила:</h4>
@@ -427,8 +561,10 @@
             "Проверить". Таких фото будет 5, после подводятся итоги игры.</p>
         <h4>Почему BGDGUESSR?</h4>
         <p>BGDGUESSR = Bgd guessr = Belgorod guess = Угадай Белгород</p>
-        <h3>Создатель: SuBtItRi в <a href="https://t.me/SuBtItRi">TG</a>, <a href="https://vk.com/wolfzxc">VK</a></h3>
-        <!-- <h3>Сделал часть точек: Ugrock в <a href="https://t.me/ugrock78">TG</a></h3> -->
+        <h3>Создатель: SuBtItRi в <a href="https://t.me/SuBtItRi">TG</a>, <a href="https://vk.com/wolfzxc"
+                                                                             class="vk">VK</a></h3>
+        <h3>Сделал часть точек: Ugrock в <a href="https://t.me/ugrock78">TG</a>, <a
+                href="https://www.youtube.com/@Ugrock_78" class="yt">YT</a></h3>
         <button id="close-info-btn" class="click-btn close-btn hidden">Закрыть</button>
     </div>
     <div id="upd-popup" class="hidden">
@@ -442,10 +578,13 @@
         <button id="close-upd-btn" class="click-btn close-btn hidden">Закрыть</button>
     </div>
     <div class="result-box hidden">
+        <div id="timer" class="hidden">
+            <div id="countdown"></div>
+        </div>
         <img class="result-img" src="" alt="Результат">
         <div class="indicator">
             <span id="image-counter">1/5</span>
-            <span id="score-indicator">0/500</span>
+            <span id="score-indicator"></span>
         </div>
         <div id="score"></div>
         <div class="find-wrap">
@@ -476,6 +615,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         var audio = new Audio('music.mp3');
         audio.loop = true; // Чтобы музыка повторялась
+        audio.volume = 0.1;
         audio.pause();
         var pointCount = 30;
         var vl = 0;
@@ -485,6 +625,38 @@
         var links = document.querySelectorAll('a'); // Находим все ссылки на странице
         var updateListDiv = document.getElementById('update-list');
         var whatUpdateDiv = document.getElementById('what-update');
+        const slider = document.getElementById("myRange");
+        var mode = 10; // По умолчанию
+        var time;
+        var c_time;
+        function start_timer() {
+        document.getElementById("timer").classList.remove("hidden");
+        time = c_time;
+            if (mode === 10) {
+                document.getElementById("countdown").textContent = 'Ꝏ';
+            } else {
+                document.getElementById("countdown").textContent = time;
+                var timer = setInterval(function () {
+                    time--;
+                    document.getElementById("countdown").textContent = time;
+                    if (time <= 0) {
+                        clearInterval(timer);
+                        document.getElementById("timer").classList.add("hidden");
+                    }
+                    if (time === 0) {
+                        document.getElementById('find-btn').click();
+                    }
+                }, 1000);
+            }
+    }
+        // Обработчик изменения значения ползунка
+        slider.addEventListener('input', function () {
+            const m_values = [10, 50, 60, 70, 80, 90, 100, 200];
+            mode = m_values[parseInt(this.value) - 1];
+            const t_values = [-1, 35, 30, 25, 20, 15, 10, 5];
+            c_time = t_values[parseInt(this.value) - 1];
+            time = c_time;
+        });
         // Создаем массив для хранения уже использованных чисел
         var usedNumbers = [];
         document.getElementById('toggle-btn').addEventListener('click', function () {
@@ -647,9 +819,15 @@
             document.querySelector('.search-box').classList.remove('hidden');
         });
         document.getElementById('start-btn').addEventListener('click', function () {
+            document.querySelector('.search-box').classList.add('hidden');
+            document.querySelector('.start-game-popup').classList.remove('hidden')
+        })
+        document.getElementById('start-game').addEventListener('click', function () {
+            start_timer()
+            document.getElementById('score-indicator').innerText = score + '/' + mode * 5;
             document.body.style.backgroundImage = 'none';
             document.body.style.backgroundColor = 'whitesmoke';
-            document.querySelector('.search-box').classList.add('hidden');
+            document.querySelector('.start-game-popup').classList.add('hidden');
             document.querySelector('.result-box').classList.remove('hidden');
             document.querySelector('#map').classList.remove('hidden');
             document.getElementById('toggle-btn').innerText = '🔉'
@@ -658,9 +836,7 @@
             var imgSrc = 'images/' + randomNum + '.png';
             document.querySelector('.result-img').src = imgSrc;
             audio.play();
-
             ymaps.ready(init);
-
             function init() {
                 var myMap = new ymaps.Map('map', {
                     center: [50.595414, 36.587277],
@@ -668,7 +844,6 @@
                     controls: [],
                     type: 'yandex#hybrid'
                 });
-
                 myMap.events.add('click', function (e) {
                     if (!found) {
                         var coords = e.get('coords');
@@ -697,9 +872,11 @@
                         document.getElementById('find-btn').classList.remove('hidden');
                     }
                 });
+                var objectsBefore = myMap.geoObjects.getLength();
 
                 document.getElementById('find-btn').addEventListener('click', function () {
                     if (!found) {
+                        var objectsAfter = myMap.geoObjects.getLength();
                         fetch('coordinates.txt')
                             .then(response => response.text())
                             .then(data => {
@@ -729,13 +906,15 @@
 
                                 // Добавляем полилинию на карту
                                 myMap.geoObjects.add(line);
-
                                 var distance = Math.round(ymaps.coordSystem.geo.getDistance(myMap.geoObjects.get(0).geometry.getCoordinates(), redPointCoords));
-                                var scoreForRound = Math.max(0, Math.round((3000 - distance) / 30));
-                                score += scoreForRound;
-
-                                document.getElementById('score').innerText = 'За эту точку вы получили ' + scoreForRound + ' очков (' + distance + 'м до точки)';
-                                document.getElementById('score-indicator').innerText = score + '/500';
+                                var scoreForRound = Math.max(0, Math.round((3000 - distance) / (3000 / mode)));
+                                if (objectsAfter != objectsBefore) {
+                                    score += scoreForRound;
+                                    document.getElementById('score').innerText = 'За эту точку вы получили ' + scoreForRound + ' очков (' + distance + 'м до точки)';
+                                } else {
+                                    document.getElementById('score').innerText = 'Вы не поставили точку (0 очков)';
+                                }
+                                document.getElementById('score-indicator').innerText = score + '/' + mode * 5;
                                 document.getElementById('find-btn').classList.add('hidden');
                                 document.getElementById('score').classList.remove('hidden');
                                 document.getElementById('next-btn').innerText = 'Далее';
@@ -758,6 +937,7 @@
                 });
 
                 document.getElementById('next-btn').addEventListener('click', function () {
+                    start_timer()
                     imageCounter++;
                     if (imageCounter <= 5) {
                         document.getElementById('image-counter').innerText = imageCounter + '/5';
@@ -765,6 +945,7 @@
                         document.getElementById('find-btn').classList.add('hidden')
                         document.getElementById('next-btn').innerText = 'Пропустить';
                         myMap.geoObjects.removeAll();
+                        objectsBefore = myMap.geoObjects.getLength();
                         randomNum = getRandomNumber(1, pointCount);
                         imgSrc = "images/" + randomNum + '.png';
                         document.querySelector('.result-img').src = imgSrc;
@@ -779,8 +960,7 @@
                 });
 
                 document.getElementById('continue-btn').addEventListener('click', function () {
-                    var endGamePopup = document.getElementById('end-game-popup');
-                    endGamePopup.classList.remove('hidden');
+                    document.getElementById('end-game-popup').classList.remove('hidden');
                     document.getElementById('final-score').innerText = score;
                 });
 
