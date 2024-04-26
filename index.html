@@ -801,10 +801,10 @@
         links.forEach(function (link) {
             link.setAttribute('target', '_blank'); // Добавляем атрибут target="_blank"
         });
-        /** Предотвращаем контекстное меню
+        // Предотвращаем контекстное меню
         document.addEventListener('contextmenu', function (e) {
             e.preventDefault();
-        }); **/
+        });
 
         // Предотвращаем выделение текста
         document.addEventListener('selectstart', function (e) {
