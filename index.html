@@ -6,6 +6,8 @@
     <title>Поиск по Белгороду</title>
     <link rel="icon" href="images/logo.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <link rel="stylesheet" href="magnify.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" charset="utf-8"></script>
     <style>
         #warning-message {
             display: none;
@@ -513,6 +515,7 @@
             justify-content: center;
             align-items: center;
             font-size: 24px;
+            z-index: 9999;
         }
     </style>
 </head>
@@ -582,7 +585,7 @@
         <div id="timer" class="hidden">
             <div id="countdown"></div>
         </div>
-        <img class="result-img" src="" alt="Результат">
+        <img id="image" class="zoom result-img" src="" alt="Результат" data-magnify-src="">
         <div class="indicator">
             <span id="image-counter">1/5</span>
             <span id="score-indicator"></span>
@@ -611,13 +614,14 @@
     </div>
 </div>
 <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_ключ_апи&lang=ru_RU" type="text/javascript"></script>
+<script src="jquery.magnify.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var audio = new Audio('music.mp3');
         audio.loop = true; // Чтобы музыка повторялась
         audio.volume = 0.1;
         audio.pause();
-        var pointCount = 30;
+        var pointCount = 37;
         var vl = 0;
         var imageCounter = 1;
         var score = 0;
@@ -629,6 +633,12 @@
         var mode = 10; // По умолчанию
         var time;
         var c_time;
+
+        function start_zoom() {
+            $(document).ready(function () {
+                $('.zoom').magnify();
+            });
+        }
 
         function start_timer() {
             document.getElementById("timer").classList.remove("hidden");
@@ -791,10 +801,10 @@
         links.forEach(function (link) {
             link.setAttribute('target', '_blank'); // Добавляем атрибут target="_blank"
         });
-        // Предотвращаем контекстное меню
+        /** Предотвращаем контекстное меню
         document.addEventListener('contextmenu', function (e) {
             e.preventDefault();
-        });
+        }); **/
 
         // Предотвращаем выделение текста
         document.addEventListener('selectstart', function (e) {
@@ -841,13 +851,15 @@
             var randomNum = getRandomNumber(1, pointCount);
             var imgSrc = 'images/' + randomNum + '.png';
             document.querySelector('.result-img').src = imgSrc;
+            document.getElementById('image').setAttribute('data-magnify-src', imgSrc);
+            start_zoom()
             audio.play();
             ymaps.ready(init);
 
             function init() {
                 var myMap = new ymaps.Map('map', {
                     center: [50.595414, 36.587277],
-                    zoom: 12,
+                    zoom: 13,
                     controls: [],
                     type: 'yandex#hybrid'
                 });
@@ -887,7 +899,7 @@
                             .then(response => response.text())
                             .then(data => {
                                 var coordinates = data.trim().split('\n');
-                                var redPointCoords = coordinates[randomNum - 1].split(',');
+                                var redPointCoords = coordinates[randomNum - 1].split(', ');
 
                                 var redPlacemark = new ymaps.Placemark(redPointCoords, {}, {
                                     preset: 'islands#redDotIcon'
@@ -898,21 +910,17 @@
                                 // Получаем координаты зеленой точки (пользовательской точки)
                                 var userCoords = myMap.geoObjects.get(0).geometry.getCoordinates();
 
-                                // Получаем координаты красной точки (истинной точки)
-                                var trueCoords = redPointCoords;
-
                                 // Создаем полилинию, соединяющую эти точки
                                 var line = new ymaps.Polyline([
                                     userCoords,
-                                    trueCoords
+                                    redPointCoords
                                 ], {}, {
                                     strokeColor: '#000000', // Цвет линии (зеленый)
                                     strokeWidth: 5 // Толщина линии
                                 });
-
                                 // Добавляем полилинию на карту
                                 myMap.geoObjects.add(line);
-                                var distance = Math.round(ymaps.coordSystem.geo.getDistance(myMap.geoObjects.get(0).geometry.getCoordinates(), redPointCoords));
+                                var distance = Math.round(ymaps.coordSystem.geo.getDistance(userCoords, redPointCoords));
                                 var scoreForRound = Math.max(0, Math.round((3000 - distance) / (3000 / mode)));
                                 if (objectsAfter != objectsBefore) {
                                     score += scoreForRound;
@@ -920,15 +928,28 @@
                                 } else {
                                     document.getElementById('score').innerText = 'Вы не поставили точку (0 очков)';
                                 }
-                                document.getElementById('score-indicator').innerText = score + '/' + mode * 5;
+                                document.getElementById('score-indicator').innerText = score + '/' + mode * 5 + ' +' + scoreForRound;
                                 document.getElementById('find-btn').classList.add('hidden');
                                 document.getElementById('score').classList.remove('hidden');
                                 document.getElementById('next-btn').classList.add('hidden')
-                                var bounds = [userCoords, redPointCoords];
-                                // Устанавливаем границы карты так, чтобы они включали обе точки
-                                myMap.setBounds(bounds, {
-                                    checkZoomRange: 10
-                                });
+                                document.getElementById('skip-btn').classList.add('hidden');
+                                // Координаты первой точки (userCoords)
+                                var lat1 = userCoords[0];
+                                var lng1 = userCoords[1];
+
+                                // Координаты второй точки (redPointCoords)
+                                var lat2 = redPointCoords[0];
+                                var lng2 = parseFloat(String(redPointCoords[1]).replace(/\r/g, ''), 10);
+
+                                // Вычисление средней широты
+                                var middleLat = (lat1 + lat2) / 2;
+
+                                // Вычисление средней долготы
+                                var middleLng = (lng1 + lng2) / 2;
+
+                                // Координаты точки, находящейся посередине между двумя точками
+                                var middlePoint = [middleLat, middleLng];
+                                myMap.setCenter(middlePoint, 13);
                                 setTimeout(() => {
                                     document.getElementById('score').classList.add('hidden')
                                     if (imageCounter < 5) {
@@ -938,17 +959,13 @@
                                         document.getElementById('continue-btn').classList.remove('hidden');
                                     }
                                 }, 5000);
-
-
                                 found = true;
                             })
                             .catch(error => console.error('Ошибка при загрузке файла:', error));
                     }
                 });
                 document.getElementById('skip-btn').addEventListener('click', function () {
-                    document.getElementById('skip-btn').classList.add('hidden')
                     if (!found) {
-                        var objectsAfter = myMap.geoObjects.getLength();
                         fetch('coordinates.txt')
                             .then(response => response.text())
                             .then(data => {
@@ -958,55 +975,19 @@
                                 var redPlacemark = new ymaps.Placemark(redPointCoords, {}, {
                                     preset: 'islands#redDotIcon'
                                 });
-
                                 myMap.geoObjects.add(redPlacemark);
-
-                                // Получаем координаты зеленой точки (пользовательской точки)
-                                var userCoords = myMap.geoObjects.get(0).geometry.getCoordinates();
-
-                                // Получаем координаты красной точки (истинной точки)
-                                var trueCoords = redPointCoords;
-
-                                // Создаем полилинию, соединяющую эти точки
-                                var line = new ymaps.Polyline([
-                                    userCoords,
-                                    trueCoords
-                                ], {}, {
-                                    strokeColor: '#000000', // Цвет линии (зеленый)
-                                    strokeWidth: 5 // Толщина линии
-                                });
-
-                                // Добавляем полилинию на карту
-                                myMap.geoObjects.add(line);
-                                var distance = Math.round(ymaps.coordSystem.geo.getDistance(myMap.geoObjects.get(0).geometry.getCoordinates(), redPointCoords));
-                                var scoreForRound = Math.max(0, Math.round((3000 - distance) / (3000 / mode)));
-                                if (objectsAfter != objectsBefore) {
-                                    score += scoreForRound;
-                                    document.getElementById('score').innerText = 'За эту точку вы получили ' + scoreForRound + ' очков (' + distance + 'м до точки)';
-                                } else {
-                                    document.getElementById('score').innerText = 'Вы не поставили точку (0 очков)';
-                                }
-                                document.getElementById('score-indicator').innerText = score + '/' + mode * 5;
+                                document.getElementById('score-indicator').innerText = score + '/' + mode * 5 + ' пропуск';
                                 document.getElementById('find-btn').classList.add('hidden');
                                 document.getElementById('score').classList.remove('hidden');
-                                document.getElementById('next-btn').innerText = 'Далее';
                                 document.getElementById('next-btn').classList.add('hidden')
-                                var bounds = [userCoords, redPointCoords];
-                                // Устанавливаем границы карты так, чтобы они включали обе точки
-                                myMap.setBounds(bounds, {
-                                    checkZoomRange: 10
-                                });
-                                setTimeout(() => {
-                                    document.getElementById('score').classList.add('hidden')
-                                    if (imageCounter < 5) {
-                                        document.getElementById('next-btn').classList.remove('hidden');
-                                    } else {
-                                        document.getElementById('next-btn').classList.add('hidden')
-                                        document.getElementById('continue-btn').classList.remove('hidden');
-                                    }
-                                }, 5000);
-
-
+                                document.getElementById('skip-btn').classList.add('hidden');
+                                document.getElementById('score').classList.add('hidden')
+                                if (imageCounter < 5) {
+                                    document.getElementById('next-btn').classList.remove('hidden');
+                                } else {
+                                    document.getElementById('next-btn').classList.add('hidden')
+                                    document.getElementById('continue-btn').classList.remove('hidden');
+                                }
                                 found = true;
                             })
                             .catch(error => console.error('Ошибка при загрузке файла:', error));
@@ -1015,7 +996,7 @@
                 document.getElementById('next-btn').addEventListener('click', function () {
                     document.getElementById('next-btn').classList.add('hidden')
                     start_timer()
-                    myMap.setCenter([50.595414, 36.587277], 12);
+                    myMap.setCenter([50.595414, 36.587277], 13);
                     imageCounter++;
                     if (imageCounter <= 5) {
                         document.getElementById('image-counter').innerText = imageCounter + '/5';
@@ -1027,6 +1008,8 @@
                         randomNum = getRandomNumber(1, pointCount);
                         imgSrc = "images/" + randomNum + '.png';
                         document.querySelector('.result-img').src = imgSrc;
+                        document.getElementById('image').setAttribute('data-magnify-src', imgSrc);
+                        start_zoom()
                         found = false;
                     } else {
                         document.getElementById('next-btn').classList.add('hidden')
