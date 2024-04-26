@@ -552,6 +552,7 @@
             </div>
         </div>
         <button id="start-game" class="click-btn start btn">Играть</button>
+        <button id="back-btn" class="click-btn close-btn btn">Назад</button>
         <div class="start-popup">Сначала выберете время выделенное на точку</div>
     </div>
     <div id="info-popup" class="hidden">
@@ -821,6 +822,10 @@
         document.getElementById('start-btn').addEventListener('click', function () {
             document.querySelector('.search-box').classList.add('hidden');
             document.querySelector('.start-game-popup').classList.remove('hidden')
+        })
+        document.getElementById('back-btn').addEventListener('click', function () {
+            document.querySelector('.search-box').classList.remove('hidden');
+            document.querySelector('.start-game-popup').classList.add('hidden')
         })
         document.getElementById('start-game').addEventListener('click', function () {
             start_timer()
