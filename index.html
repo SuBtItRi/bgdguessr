@@ -922,30 +922,31 @@
                                 myMap.geoObjects.add(line);
                                 var distance = Math.round(ymaps.coordSystem.geo.getDistance(userCoords, redPointCoords));
                                 var scoreForRound = Math.max(0, Math.round((3000 - distance) / (3000 / mode)));
+                                var zoom = 17;
                                 if (objectsAfter != objectsBefore) {
                                     score += scoreForRound;
                                     document.getElementById('score').innerText = 'За эту точку вы получили ' + scoreForRound + ' очков (' + distance + 'м до точки)';
+                                    if (distance <= 1000) {
+                                        zoom = 16
+                                    } else if (distance <= 2500) {
+                                        zoom = 15
+                                    } else if (distance <= 5000) {
+                                        zoom = 14
+                                    } else if (distance <= 10000) {
+                                        zoom = 13
+                                    } else {
+                                        zoom = 12
+                                    }
+                                    myMap.setCenter([[(userCoords[0] + redPointCoords[0]) / 2], [(userCoords[1] + parseFloat(String(redPointCoords[1]).replace(/\r/g, ''), 10)) / 2]], zoom);
                                 } else {
                                     document.getElementById('score').innerText = 'Вы не поставили точку (0 очков)';
+                                    myMap.setCenter(redPointCoords, zoom);
                                 }
                                 document.getElementById('score-indicator').innerText = score + '/' + mode * 5 + ' +' + scoreForRound;
                                 document.getElementById('find-btn').classList.add('hidden');
                                 document.getElementById('score').classList.remove('hidden');
                                 document.getElementById('next-btn').classList.add('hidden')
                                 document.getElementById('skip-btn').classList.add('hidden');
-                                var zoom;
-                                if (distance <= 1000) {
-                                    zoom = 16
-                                } else if (distance <= 2500) {
-                                    zoom = 15
-                                } else if (distance <= 5000) {
-                                    zoom = 14
-                                } else if (distance <= 10000) {
-                                    zoom = 13
-                                } else {
-                                    zoom = 12
-                                }
-                                myMap.setCenter([[(userCoords[0] + redPointCoords[0]) / 2], [(userCoords[1] + parseFloat(String(redPointCoords[1]).replace(/\r/g, ''), 10)) / 2]], zoom);
                                 setTimeout(() => {
                                     document.getElementById('score').classList.add('hidden')
                                     if (imageCounter < 5) {
