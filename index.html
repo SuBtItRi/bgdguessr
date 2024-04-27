@@ -567,7 +567,7 @@
         <p>BGDGUESSR = Bgd guessr = Belgorod guess = Угадай Белгород</p>
         <h3>Создатель: SuBtItRi в <a href="https://t.me/SuBtItRi">TG</a>, <a href="https://vk.com/wolfzxc"
                                                                              class="vk">VK</a></h3>
-        <h3>Сделал часть точек: Ugrock в <a href="https://t.me/ugrock78">TG</a>, <a
+        <h3>Помогал: Ugrock в <a href="https://t.me/ugrock78">TG</a>, <a
                 href="https://www.youtube.com/@Ugrock_78" class="yt">YT</a></h3>
         <button id="close-info-btn" class="click-btn close-btn hidden">Закрыть</button>
     </div>
@@ -926,7 +926,11 @@
                                 if (objectsAfter != objectsBefore) {
                                     score += scoreForRound;
                                     document.getElementById('score').innerText = 'За эту точку вы получили ' + scoreForRound + ' очков (' + distance + 'м до точки)';
-                                    if (distance <= 1000) {
+                                    if (distance <= 100) {
+                                        zoom = 18
+                                    } else if (distance <= 500) {
+                                        zoom = 17
+                                    } else if (distance <= 1000) {
                                         zoom = 16
                                     } else if (distance <= 2500) {
                                         zoom = 15
@@ -940,6 +944,7 @@
                                     myMap.setCenter([[(userCoords[0] + redPointCoords[0]) / 2], [(userCoords[1] + parseFloat(String(redPointCoords[1]).replace(/\r/g, ''), 10)) / 2]], zoom);
                                 } else {
                                     document.getElementById('score').innerText = 'Вы не поставили точку (0 очков)';
+                                    scoreForRound = 0;
                                     myMap.setCenter(redPointCoords, zoom);
                                 }
                                 document.getElementById('score-indicator').innerText = score + '/' + mode * 5 + ' +' + scoreForRound;
