@@ -368,12 +368,12 @@
             border-radius: 10px;
             z-index: 999;
             text-align: center;
-            width: 60%;
+            width: 800px;
         }
 
         #upd-popup {
             position: absolute;
-            top: 35%;
+            top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: rgba(255, 255, 255);
@@ -385,7 +385,7 @@
         }
 
         #add-upd-popup {
-            height: 81%;
+            height: 85%;
             overflow-y: scroll;
         }
 
@@ -794,7 +794,7 @@
                 var wdescription = wparts.join('<br>'); // Остальные строки - описание
                 html += '<p>' + wdescription + '</p>'; // Форматирование описания
             });
-            whatUpdateDiv.innerHTML = '<h4>Добавится:</h4>' + html; // Вставка HTML на страницу
+            whatUpdateDiv.innerHTML = '<h4>Планируется добавить:</h4>' + html; // Вставка HTML на страницу
         }
 
         links.forEach(function (link) {
