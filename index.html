@@ -566,8 +566,10 @@
         <h4>Почему BGDGUESSR?</h4>
         <p>BGDGUESSR = Bgd guessr = Belgorod guess = Угадай Белгород</p>
         <h3>Создатель: SuBtItRi в <a href="https://t.me/SuBtItRi">TG</a>, <a href="https://vk.com/wolfzxc"
-                                                                             class="vk">VK</a>   |   Помогал: Ugrock в <a
-                href="https://t.me/ugrock78">TG</a>, <a href="https://www.youtube.com/@Ugrock_78" class="yt">YT</a></h3>
+                                                                             class="vk">VK</a>   |   Помогал: Ugrock в
+            <a
+                    href="https://t.me/ugrock78">TG</a>, <a href="https://www.youtube.com/@Ugrock_78" class="yt">YT</a>
+        </h3>
         <button id="close-info-btn" class="click-btn close-btn hidden">Закрыть</button>
     </div>
     <div id="upd-popup" class="hidden">
@@ -604,7 +606,9 @@
 <div id="end-game-popup" class="hidden">
     <h1>Итоги игры</h1>
     <h2>Ваш итоговый счет: <br><span id="final-score">0</span></h2>
-    <button id="restart-btn" class="click-btn btn">Начать заново</button>
+    <h2><span id="u-cool"></span></h2>
+    <h5><span id="later-achiev"></span></h5>
+    <button id="restart-btn" class="click-btn close-btn btn">Начать заново</button>
 </div>
 <div id="warning-message" class="container">
     <div class="search-box">
@@ -1024,10 +1028,37 @@
                 document.getElementById('continue-btn').addEventListener('click', function () {
                     document.getElementById('end-game-popup').classList.remove('hidden');
                     document.getElementById('final-score').innerText = score;
-                });
-
-                document.getElementById('restart-btn').addEventListener('click', function () {
-                    location.reload();
+                    if (score === 1000) {
+                        document.getElementById('u-cool').innerText = '🎉ВОТ ЭТА ТЫ КРУТОЙ, ПОЗДРАВЛЯЮ🎉';
+                        document.getElementById('later-achiev').innerText = '(Позже за это будет достижение)😎';
+                    } else {
+                        var mode1 = mode * 5
+                        var mode075 = mode * 5 * 0.75
+                        var mode05 = mode * 5 * 0.5
+                        var mode025 = mode * 5 * 0.25
+                        if (score === 0) {
+                            document.getElementById('u-cool').innerText = 'Серьезно, ноль?';
+                            document.getElementById('later-achiev').innerText = '(Позже за это будет достижение😅)';
+                        }
+                        if (score > 0) {
+                            document.getElementById('u-cool').innerText = 'Чуть больше нуля 😅';
+                        }
+                        if (score > mode025) {
+                            document.getElementById('u-cool').innerText = 'Чуть меньше половины 😢';
+                        }
+                        if (score > mode05) {
+                            document.getElementById('u-cool').innerText = 'Чуть больше половины 😉';
+                        }
+                        if (score > mode075) {
+                            document.getElementById('u-cool').innerText = '😄А ты неплох😄';
+                        }
+                        if (score === mode1) {
+                            document.getElementById('u-cool').innerText = '🎉100%, ТЫ МОЛОДЕЦ🎉';
+                        }
+                    }
+                    document.getElementById('restart-btn').addEventListener('click', function () {
+                        location.reload();
+                    });
                 });
             }
         });
