@@ -33,7 +33,7 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-image: url('images/bg.png');
+            background-image: url('images/bg.jpg');
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -554,7 +554,7 @@
 <div id="main" class="container">
     <button id="toggle-btn">🔇</button>
     <div class="search-box">
-        <img class="logo" src="images/logo.png" alt="Логотип">
+        <img class="logo" src="images/logo.jpg" alt="Логотип">
         <h4>Версия: <span id="version"></span></h4>
         <button id="start-btn" class="click-btn btn">Начать игру</button>
         <button id="info-btn" class="click-btn btn">Информация</button>
@@ -617,7 +617,7 @@
         <div id="timer" class="hidden">
             <div id="countdown"></div>
         </div>
-        <img id="load" style="width: 100%" src="images/load.png">
+        <img id="load" style="width: 100%" src="images/load.jpg">
         <div class="image-container">
             <div class="loading-overlay">
                 <div class="loading-spinner"></div>
@@ -649,7 +649,7 @@
 </div>
 <div id="warning-message" class="container">
     <div class="search-box">
-        <img class="logo-p" src="images/logo.png" alt="Логотип">
+        <img class="logo-p" src="images/logo.jpg" alt="Логотип">
         <h3>На телефоне сайт работает <br><br>только в горизонтальном положении,<br><br> переверните телефон</h3>
     </div>
 </div>
@@ -661,9 +661,9 @@
         audio.loop = true; // Чтобы музыка повторялась
         audio.volume = 0.1;
         audio.pause();
-        var pointCount = 37;
+        var pointCount = 1;
+        var ImageCounter = 1;
         var vl = 0;
-        var imageCounter = 1;
         var score = 0;
         var found = false
         var links = document.querySelectorAll('a'); // Находим все ссылки на странице
@@ -673,6 +673,24 @@
         var mode = 10; // По умолчанию
         var time;
         var c_time;
+
+        // Находим pointCounter
+        (async () => {
+            while (true) {
+                try {
+                    const response = await fetch(`images/${pointCount}.png`, {method: 'HEAD'});
+                    if (response.ok) {
+                        pointCount++;
+                    } else {
+                        console.log(`Обнаружено ${pointCount} файлов.`);
+                        break;
+                    }
+                } catch (err) {
+                    console.error(err);
+                    break;
+                }
+            }
+        })();
 
         function start_zoom() {
             $(document).ready(function () {
@@ -1005,7 +1023,7 @@
                                 document.getElementById('skip-btn').classList.add('hidden');
                                 setTimeout(() => {
                                     document.getElementById('score').classList.add('hidden')
-                                    if (imageCounter < 5) {
+                                    if (ImageCounter < 5) {
                                         document.getElementById('next-btn').classList.remove('hidden');
                                     } else {
                                         document.getElementById('next-btn').classList.add('hidden')
@@ -1035,7 +1053,7 @@
                                 document.getElementById('next-btn').classList.add('hidden')
                                 document.getElementById('skip-btn').classList.add('hidden');
                                 document.getElementById('score').classList.add('hidden')
-                                if (imageCounter < 5) {
+                                if (ImageCounter < 5) {
                                     document.getElementById('next-btn').classList.remove('hidden');
                                 } else {
                                     document.getElementById('next-btn').classList.add('hidden')
@@ -1049,9 +1067,9 @@
                 document.getElementById('next-btn').addEventListener('click', function () {
                     document.getElementById('next-btn').classList.add('hidden')
                     myMap.setCenter([50.595414, 36.587277], 13);
-                    imageCounter++;
-                    if (imageCounter <= 5) {
-                        document.getElementById('image-counter').innerText = imageCounter + '/5';
+                    ImageCounter++;
+                    if (ImageCounter <= 5) {
+                        document.getElementById('image-counter').innerText = ImageCounter + '/5';
                         document.getElementById('score').classList.add('hidden');
                         document.getElementById('find-btn').classList.add('hidden')
                         document.getElementById('skip-btn').classList.remove('hidden')
