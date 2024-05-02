@@ -682,6 +682,7 @@
                     if (response.ok) {
                         pointCount++;
                     } else {
+                        pointCount--;
                         console.log(`Обнаружено ${pointCount} файлов.`);
                         break;
                     }
