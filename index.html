@@ -30,6 +30,11 @@
         }
 
         body {
+            --background-color: white;
+            --background-slider: whitesmoke;
+            --background-game: whitesmoke;
+            background-color: var(--background-game);
+            color: black;
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
@@ -45,6 +50,13 @@
             cursor: default;
         }
 
+        body.dark-theme {
+            --background-color: #292929;
+            --background-slider: #dfdfdf;
+            --background-game: #8c8c8c;
+            color: #cacaca;
+        }
+
         .column {
             width: 50%; /* Ширина каждого столбца */
             border: 1px solid #e8e8e8; /* Граница для визуального разделения */
@@ -58,14 +70,14 @@
         }
 
         .search-box {
-            background-color: rgba(255, 255, 255);
+            background-color: var(--background-color);
             padding: 20px;
             border-radius: 10px;
             line-height: 0.5;
         }
 
         .start-game-popup {
-            background-color: rgba(255, 255, 255);
+            background-color: var(--background-color);
             padding: 20px;
             border-radius: 10px;
             line-height: 0.5;
@@ -94,8 +106,9 @@
             background-size: 200% auto;
             background-position: left top;
             border-color: transparent;
-            color: white;
+            color: var(--background-color);
             position: relative;
+            width: 150px;
         }
 
         .btn:hover {
@@ -145,8 +158,9 @@
             background-size: 200% auto;
             background-position: left top;
             border-color: transparent;
-            color: white;
+            color: var(--background-color);
             position: relative;
+            width: 150px;
         }
 
         .close-btn:hover {
@@ -188,6 +202,110 @@
             width: 100%;
             height: 0;
             border-color: #fa0000;
+            border-width: 0 1px 0 1px;
+        }
+
+        .dark-btn {
+            background-image: linear-gradient(to right, rgb(41, 41, 41) 0%, rgb(60, 60, 60) 51%, rgb(41, 41, 41) 100%);
+            background-size: 200% auto;
+            background-position: left top;
+            border-color: transparent;
+            color: var(--background-color);
+            position: relative;
+            width: 150px;
+        }
+
+        .dark-btn:hover {
+            background-position: right bottom;
+            color: black;
+            border-color: black;
+
+            &::before {
+                width: 100%;
+                border-width: 1px 0 1px 0;
+            }
+
+            &::after {
+                height: 100%;
+                border-width: 0 1px 0 1px;
+            }
+        }
+
+        .dark-btn::before,
+        .dark-btn::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 5px;
+            border-style: solid;
+            transition: all 0.35s;
+            content: "";
+            z-index: 1;
+        }
+
+        .dark-btn::before {
+            width: 0;
+            height: 100%;
+            border-color: black;
+            border-width: 1px 0 1px 0;
+        }
+
+        .dark-btn::after {
+            width: 100%;
+            height: 0;
+            border-color: black;
+            border-width: 0 1px 0 1px;
+        }
+
+        .dark-btn.light-btn {
+            background-image: linear-gradient(to right, rgb(195, 195, 195) 0%, rgb(220, 220, 220) 51%, rgb(195, 195, 195) 100%);
+            background-size: 200% auto;
+            background-position: left top;
+            border-color: transparent;
+            color: var(--background-color);
+            position: relative;
+            width: 150px;
+        }
+
+        .dark-btn.light-btn:hover {
+            background-position: right bottom;
+            color: white;
+            border-color: white;
+
+            &::before {
+                width: 100%;
+                border-width: 1px 0 1px 0;
+            }
+
+            &::after {
+                height: 100%;
+                border-width: 0 1px 0 1px;
+            }
+        }
+
+        .dark-btn.light-btn::before,
+        .dark-btn.light-btn::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 5px;
+            border-style: solid;
+            transition: all 0.35s;
+            content: "";
+            z-index: 1;
+        }
+
+        .dark-btn.light-btn::before {
+            width: 0;
+            height: 100%;
+            border-color: white;
+            border-width: 1px 0 1px 0;
+        }
+
+        .dark-btn.light-btn::after {
+            width: 100%;
+            height: 0;
+            border-color: white;
             border-width: 0 1px 0 1px;
         }
 
@@ -344,7 +462,7 @@
             font-size: 24px;
             border: none;
             padding: 10px 20px;
-            color: #313133;
+            color: var(--background-slider);
             text-transform: uppercase;
             letter-spacing: 1.3px;
             font-weight: 700;
@@ -358,17 +476,32 @@
             margin-left: 20%;
         }
 
-        #info-popup, #end-game-popup {
+        #info-popup, #end-game-popup, #acc-popup, #settings-popup, #achiev-popup {
             position: absolute;
             top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255);
+            background-color: var(--background-color);
             padding: 20px;
             border-radius: 10px;
             z-index: 999;
-            text-align: center;
-            width: 40%;
+            align-content: center;
+            width: 50%;
+        }
+
+        .text-settings-popup {
+            position: absolute;
+            text-align: left;
+            font-size: 20px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            line-height: 2.75;
+        }
+
+        .button-settings-popup {
+            text-align: right;
         }
 
         #upd-popup {
@@ -376,16 +509,16 @@
             top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255);
+            background-color: var(--background-color);
             padding: 20px;
             border-radius: 10px;
             z-index: 999;
             width: 60%;
-            height: 75%;
+            height: 65%;
         }
 
         #add-upd-popup {
-            height: 85%;
+            max-height: 75%;
             overflow-y: scroll;
         }
 
@@ -429,25 +562,6 @@
             height: auto;
         }
 
-        .start-popup {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
-
-        .start {
-            margin-top: 10%;
-        }
-
-        .start:hover + .start-popup {
-            display: block;
-        }
-
         .slider-container {
             position: relative;
         }
@@ -459,7 +573,6 @@
             justify-content: space-between;
             font-size: 12px;
             top: 15px; /* Положение сверху */
-            color: #313133;
             text-transform: uppercase;
             right: -3%;
         }
@@ -475,7 +588,7 @@
             -webkit-appearance: none;
             width: 100%;
             height: 25px;
-            border-radius: 12px; /* Скругление углов */
+            border-radius: 15px; /* Скругление углов */
             background: linear-gradient(to right, #32a852 0%, #ffec06 50%, #d9534f 100%);
             -webkit-transition: .2s;
             transition: opacity .2s;
@@ -488,10 +601,10 @@
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 26px;
-            height: 26px;
+            width: 27px;
+            height: 27px;
             border-radius: 100%;
-            background: #000000;
+            background: var(--background-slider);
             cursor: pointer;
         }
 
@@ -511,6 +624,7 @@
             height: 50px;
             border-radius: 50%;
             background-color: #4FD1C5;
+            color: black;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -548,17 +662,48 @@
                 transform: rotate(360deg);
             }
         }
+
+        .text-field__input {
+            width: 95%;
+            height: calc(2.25rem + 2px);
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            color: #212529;
+            background-color: #fff;
+            border: 1px solid #bdbdbd;
+            border-radius: 0.25rem;
+        }
+
+        .mv1sb, .mv2sb, .mv3sb {
+            position: absolute;
+            display: none;
+            z-index: 9999;
+            width: 30%;
+            height: auto;
+        }
+
+        #mapviev1-settings-btn:hover + .mv1sb, #mapviev2-settings-btn:hover + .mv2sb, #mapviev3-settings-btn:hover + .mv3sb {
+            display: block;
+            pointer-events: none;
+            transform: translate(10%, -80%);
+        }
+
+
     </style>
 </head>
 <body>
 <div id="main" class="container">
     <button id="toggle-btn">🔇</button>
     <div class="search-box">
-        <img class="logo" src="images/logo.jpg" alt="Логотип">
+        <img class="logo" src="images/logo-dark.jpg" alt="Логотип">
         <h4>Версия: <span id="version"></span></h4>
         <button id="start-btn" class="click-btn btn">Начать игру</button>
         <button id="info-btn" class="click-btn btn">Информация</button>
-        <button id="upd-btn" class="click-btn btn">Список обновлений</button>
+        <button id="upd-btn" class="click-btn btn">Обновления</button>
+        <br>
+        <button id="acc-btn" class="click-btn btn">Аккаунт</button>
+        <button id="settings-btn" class="click-btn btn">Настройки</button>
+        <button id="achiev-btn" class="click-btn btn">Достижения</button>
     </div>
     <div class="start-game-popup hidden">
         <h1>      Тайм менеджмент       </h1>
@@ -585,9 +730,8 @@
                 <span>200 оч.</span>
             </div>
         </div>
-        <button id="start-game" class="click-btn start btn">Играть</button>
-        <button id="back-btn" class="click-btn close-btn btn">Назад</button>
-        <div class="start-popup">Сначала выберете время выделенное на точку</div>
+        <button id="start-game" class="click-btn btn" style="margin-top: 10%">Играть</button>
+        <button id="back-btn" class="click-btn close-btn">Назад</button>
     </div>
     <div id="info-popup" class="hidden">
         <h2>Информация об игре</h2>
@@ -596,12 +740,11 @@
             "Проверить". Таких фото будет 5, после подводятся итоги игры.</p>
         <h4>Почему BGDGUESSR?</h4>
         <p>BGDGUESSR = Bgd guessr = Belgorod guess = Угадай Белгород</p>
-        <h3>Создатель: SuBtItRi в <a href="https://t.me/SuBtItRi">TG</a>, <a href="https://vk.com/wolfzxc"
-                                                                             class="vk">VK</a>   |   Помогал: Ugrock в
-            <a
-                    href="https://t.me/ugrock78">TG</a>, <a href="https://www.youtube.com/@Ugrock_78" class="yt">YT</a>
+        <h3>Создатель: SuBtItRi в <a href="https://t.me/SuBtItRi">TG</a>,
+            <a href="https://vk.com/wolfzxc" class="vk">VK</a>   |   Помогал: Ugrock в
+            <a href="https://t.me/ugrock78">TG</a>, <a href="https://www.youtube.com/@Ugrock_78" class="yt">YT</a>
         </h3>
-        <button id="close-info-btn" class="click-btn close-btn hidden">Закрыть</button>
+        <button id="close-info-btn" class="click-btn close-btn">Закрыть</button>
     </div>
     <div id="upd-popup" class="hidden">
         <h2>Список обновлений</h2>
@@ -611,7 +754,47 @@
                 <div class="column" id="what-update"></div>
             </div>
         </div>
-        <button id="close-upd-btn" class="click-btn close-btn hidden">Закрыть</button>
+        <button id="close-upd-btn" class="click-btn close-btn">Закрыть</button>
+    </div>
+    <div id="acc-popup" class="hidden">
+        <h2>Аккаунт</h2>
+        <h3>Когда-то здесь появятся аккаунты...</h3>
+        <!--
+        <div>
+            <input id="login" type="text" class="text-field__input" placeholder="Логин"><br><br>
+            <input id="pass" type="text" class="text-field__input" placeholder="Пароль">
+            <button id="login-acc-btn" class="click-btn btn">Войти</button>
+            <button id="register-acc-btn" class="click-btn btn hidden">Зарегистрироваться</button>
+        </div>
+        -->
+        <button id="close-acc-btn" class="click-btn close-btn">Закрыть</button>
+        <br>
+    </div>
+    <div id="settings-popup" class="hidden">
+        <h2>Настройки</h2>
+        <div class="text-settings-popup">Смена темы сайта на</div>
+        <div class="button-settings-popup">
+            <button id="theme-settings-btn" class="click-btn dark-btn">Темную</button>
+        </div>
+        <div class="text-settings-popup">Автоприблежение к метке</div>
+        <div class="button-settings-popup">
+            <button id="zoommap-settings-btn" class="click-btn btn">Вкл</button>
+        </div>
+        <div class="text-settings-popup">Выбор режима карты</div>
+        <div class="button-settings-popup">
+            <button id="mapviev1-settings-btn" class="click-btn close-btn">Схема</button>
+            <img class="mv1sb" src="images/схема.jpg">
+            <button id="mapviev2-settings-btn" class="click-btn close-btn">Спутник</button>
+            <img class="mv2sb" src="images/спутник.jpg">
+            <button id="mapviev3-settings-btn" class="click-btn btn">Гибрид</button>
+            <img class="mv3sb" src="images/гибрид.jpg"></div>
+        <br><br>
+        <button id="close-settings-btn" class="click-btn close-btn">Закрыть</button>
+    </div>
+    <div id="achiev-popup" class="hidden">
+        <h2>Достижения</h2>
+        <h3>Скоро здесь появятся достижения</h3>
+        <button id="close-achiev-btn" class="click-btn close-btn">Закрыть</button>
     </div>
     <div class="result-box hidden">
         <div id="timer" class="hidden">
@@ -639,17 +822,17 @@
         </div>
     </div>
     <div id="map" class="hidden"></div>
-</div>
-<div id="end-game-popup" class="hidden">
-    <h1>Итоги игры</h1>
-    <h2>Ваш итоговый счет: <br><span id="final-score">0</span></h2>
-    <h2><span id="u-cool"></span></h2>
-    <h5><span id="later-achiev"></span></h5>
-    <button id="restart-btn" class="click-btn close-btn btn">Начать заново</button>
+    <div id="end-game-popup" class="hidden">
+        <h1>Итоги игры</h1>
+        <h2>Ваш итоговый счет: <br><span id="final-score">0</span></h2>
+        <h2><span id="u-cool"></span></h2>
+        <h5><span id="later-achiev"></span></h5>
+        <button id="restart-btn" class="click-btn close-btn" style="width: 200px">Начать заново</button>
+    </div>
 </div>
 <div id="warning-message" class="container">
     <div class="search-box">
-        <img class="logo-p" src="images/logo.jpg" alt="Логотип">
+        <img class="logo-p" src="images/logo-dark.jpg" alt="Логотип">
         <h3>На телефоне сайт работает <br><br>только в горизонтальном положении,<br><br> переверните телефон</h3>
     </div>
 </div>
@@ -657,22 +840,77 @@
 <script src="jquery.magnify.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var audio = new Audio('music.mp3');
-        audio.loop = true; // Чтобы музыка повторялась
-        audio.volume = 0.1;
-        audio.pause();
-        var pointCount = 1;
-        var ImageCounter = 1;
-        var vl = 0;
-        var score = 0;
+        var audio = new Audio('music.mp3')
+        audio.loop = true // Чтобы музыка повторялась
+        audio.volume = 0.1
+        audio.pause()
+        var pointCount = 1
+        var ImageCounter = 1
+        var vl = 0
+        var score = 0
         var found = false
-        var links = document.querySelectorAll('a'); // Находим все ссылки на странице
-        var updateListDiv = document.getElementById('update-list');
-        var whatUpdateDiv = document.getElementById('what-update');
-        const slider = document.getElementById("myRange");
+        var links = document.querySelectorAll('a') // Находим все ссылки на странице
+        var updateListDiv = document.getElementById('update-list')
+        var whatUpdateDiv = document.getElementById('what-update')
+        const slider = document.getElementById("myRange")
         var mode = 10; // По умолчанию
-        var time;
-        var c_time;
+        var time
+        var c_time
+        var timer
+        // Настройки
+        const currentTheme = localStorage.getItem('theme')
+        if (currentTheme == "dark") {
+            document.querySelector('.logo').src = 'images/logo-light.jpg';
+            document.querySelector('.logo-p').src = 'images/logo-light.jpg';
+            document.body.classList.add("dark-theme");
+            document.getElementById('theme-settings-btn').classList.add('light-btn');
+            document.getElementById('theme-settings-btn').innerText = 'светлую';
+        }
+
+        const currentZoommap = localStorage.getItem('zoommap')
+        var mapviev = 'yandex#hybrid'
+        if (currentZoommap == 0) {
+            var zoommap = 1
+            document.getElementById('zoommap-settings-btn').classList.add('close-btn');
+            document.getElementById('zoommap-settings-btn').classList.remove('btn');
+            document.getElementById('zoommap-settings-btn').innerText = 'выкл';
+        }
+        if (currentZoommap == 1) {
+            document.getElementById('zoommap-settings-btn').classList.remove('close-btn');
+            document.getElementById('zoommap-settings-btn').classList.add('btn');
+            document.getElementById('zoommap-settings-btn').innerText = 'вкл';
+            var zoommap = 0
+        }
+
+        const currentMapviev = localStorage.getItem('mapviev')
+        if (currentMapviev == 'yandex#map') {
+            document.getElementById('mapviev1-settings-btn').classList.add('btn')
+            document.getElementById('mapviev1-settings-btn').classList.remove('close-btn')
+            document.getElementById('mapviev2-settings-btn').classList.remove('btn')
+            document.getElementById('mapviev2-settings-btn').classList.add('close-btn')
+            document.getElementById('mapviev3-settings-btn').classList.remove('btn')
+            document.getElementById('mapviev3-settings-btn').classList.add('close-btn')
+            mapviev = 'yandex#map'
+        }
+        if (currentMapviev == 'yandex#satellite') {
+            document.getElementById('mapviev1-settings-btn').classList.remove('btn')
+            document.getElementById('mapviev1-settings-btn').classList.add('close-btn')
+            document.getElementById('mapviev2-settings-btn').classList.add('btn')
+            document.getElementById('mapviev2-settings-btn').classList.remove('close-btn')
+            document.getElementById('mapviev3-settings-btn').classList.remove('btn')
+            document.getElementById('mapviev3-settings-btn').classList.add('close-btn')
+            mapviev = 'yandex#satellite'
+        }
+        if (currentMapviev == 'yandex#hybrid') {
+            document.getElementById('mapviev1-settings-btn').classList.remove('btn')
+            document.getElementById('mapviev1-settings-btn').classList.add('close-btn')
+            document.getElementById('mapviev2-settings-btn').classList.remove('btn')
+            document.getElementById('mapviev2-settings-btn').classList.add('close-btn')
+            document.getElementById('mapviev3-settings-btn').classList.add('btn')
+            document.getElementById('mapviev3-settings-btn').classList.remove('close-btn')
+            mapviev = 'yandex#hybrid'
+        }
+
 
         // Находим pointCounter
         (async () => {
@@ -683,7 +921,7 @@
                         pointCount++;
                     } else {
                         pointCount--;
-                        console.log(`Обнаружено ${pointCount} файлов.`);
+                        console.log(`Обнаружено ${pointCount} точек.`);
                         break;
                     }
                 } catch (err) {
@@ -712,7 +950,7 @@
                     document.getElementById("countdown").textContent = 'Ꝏ';
                 } else {
                     document.getElementById("countdown").textContent = time;
-                    var timer = setInterval(function () {
+                    timer = setInterval(function () {
                         time--;
                         document.getElementById("countdown").textContent = time;
                         if (time <= 0) {
@@ -726,6 +964,7 @@
                 }
                 if (time <= 0) {
                     document.getElementById("countdown").textContent = '0';
+                    clearInterval(timer);
                 }
                 document.getElementById("load").classList.add("hidden");
             };
@@ -856,7 +1095,7 @@
         wu.open('GET', 'what-update.txt', true);
         wu.send();
 
-        // Форматирование списка обновлений
+        // Форматирование списка, что нужно обновить
         function formatWhatUpdate(whatUpdate) {
             var whatUpdates = whatUpdate.split(/\n(?=\d+\.\d+\.\d+)/); // Разделение на строки по версиям
             var html = '';
@@ -871,6 +1110,7 @@
         links.forEach(function (link) {
             link.setAttribute('target', '_blank'); // Добавляем атрибут target="_blank"
         });
+
         // Предотвращаем контекстное меню
         document.addEventListener('contextmenu', function (e) {
             e.preventDefault();
@@ -879,27 +1119,133 @@
         // Предотвращаем выделение текста
         document.addEventListener('selectstart', function (e) {
             e.preventDefault();
-        });
+        })
+
         document.getElementById('info-btn').addEventListener('click', function () {
             document.getElementById('info-popup').classList.remove('hidden');
-            document.getElementById('close-info-btn').classList.remove('hidden');
             document.querySelector('.search-box').classList.add('hidden');
-        });
+        })
         document.getElementById('close-info-btn').addEventListener('click', function () {
             document.getElementById('info-popup').classList.add('hidden');
-            document.getElementById('close-info-btn').classList.add('hidden');
             document.querySelector('.search-box').classList.remove('hidden');
-        });
+        })
         document.getElementById('upd-btn').addEventListener('click', function () {
             document.getElementById('upd-popup').classList.remove('hidden');
-            document.getElementById('close-upd-btn').classList.remove('hidden');
             document.querySelector('.search-box').classList.add('hidden');
-        });
+        })
         document.getElementById('close-upd-btn').addEventListener('click', function () {
             document.getElementById('upd-popup').classList.add('hidden');
-            document.getElementById('close-upd-btn').classList.add('hidden');
             document.querySelector('.search-box').classList.remove('hidden');
-        });
+        })
+        document.getElementById('acc-btn').addEventListener('click', function () {
+            document.getElementById('acc-popup').classList.remove('hidden');
+            document.querySelector('.search-box').classList.add('hidden');
+        })
+//                    document.getElementById('login-acc-btn').addEventListener('click', function () {
+//            const login = localStorage.getItem("login");
+//            const pass = localStorage.getItem("pass");
+//            if (document.getElementById('login').value === login) {
+//                if (document.getElementById('pass').value === pass) {
+//
+//                } else {
+//                    document.getElementById('pass').value = 'Неверный пароль!'
+//                                            document.getElementById('login-acc-btn').classList.add('hidden');
+//                    document.getElementById('register-acc-btn').classList.remove('hidden');
+//                }
+//            } else {
+//                document.getElementById('login').value = 'Неверный логин!'
+//                                }
+//        })
+        document.getElementById('close-acc-btn').addEventListener('click', function () {
+            document.getElementById('acc-popup').classList.add('hidden');
+            document.querySelector('.search-box').classList.remove('hidden');
+        })
+        document.getElementById('settings-btn').addEventListener('click', function () {
+            document.getElementById('settings-popup').classList.remove('hidden');
+            document.querySelector('.search-box').classList.add('hidden');
+        })
+        document.getElementById('theme-settings-btn').addEventListener('click', function () {
+            // Переключаем класс .dark-theme при каждом щелчке
+            document.body.classList.toggle("dark-theme");
+            document.querySelector('.logo').src = 'images/logo-dark.jpg';
+            document.querySelector('.logo-p').src = 'images/logo-dark.jpg';
+            document.getElementById('theme-settings-btn').classList.toggle('light-btn');
+            document.getElementById('theme-settings-btn').innerText = 'темную';
+            // Допустим, тема светлая
+            let theme = "light";
+            // Если <body> содержит класс .dark-theme…
+            if (document.body.classList.contains("dark-theme")) {
+                // …тогда делаем тему тёмной
+                theme = "dark";
+                document.querySelector('.logo').src = 'images/logo-light.jpg';
+                document.querySelector('.logo-p').src = 'images/logo-light.jpg';
+                document.getElementById('theme-settings-btn').innerText = 'светлую';
+            }
+            // После чего сохраняем выбор в localStorage
+            localStorage.setItem("theme", theme);
+        })
+        document.getElementById('zoommap-settings-btn').addEventListener('click', function () {
+            const currentZoommap = localStorage.getItem('zoommap')
+            if (currentZoommap == 0) {
+                zoommap = 1
+                document.getElementById('zoommap-settings-btn').classList.remove('close-btn');
+                document.getElementById('zoommap-settings-btn').classList.add('btn');
+                document.getElementById('zoommap-settings-btn').innerText = 'вкл';
+            }
+            if (currentZoommap == 1) {
+                document.getElementById('zoommap-settings-btn').classList.add('close-btn');
+                document.getElementById('zoommap-settings-btn').classList.remove('btn');
+                document.getElementById('zoommap-settings-btn').innerText = 'выкл';
+                zoommap = 0
+            }
+            localStorage.setItem("zoommap", zoommap);
+        })
+        document.getElementById('mapviev1-settings-btn').addEventListener('click', function () {
+            document.getElementById('mapviev1-settings-btn').classList.add('btn')
+            document.getElementById('mapviev1-settings-btn').classList.remove('close-btn')
+            document.getElementById('mapviev2-settings-btn').classList.remove('btn')
+            document.getElementById('mapviev2-settings-btn').classList.add('close-btn')
+            document.getElementById('mapviev3-settings-btn').classList.remove('btn')
+            document.getElementById('mapviev3-settings-btn').classList.add('close-btn')
+            mapviev = 'yandex#map'
+            localStorage.setItem('mapviev', mapviev)
+        })
+        document.getElementById('mapviev2-settings-btn').addEventListener('click', function () {
+            document.getElementById('mapviev1-settings-btn').classList.remove('btn')
+            document.getElementById('mapviev1-settings-btn').classList.add('close-btn')
+            document.getElementById('mapviev2-settings-btn').classList.add('btn')
+            document.getElementById('mapviev2-settings-btn').classList.remove('close-btn')
+            document.getElementById('mapviev3-settings-btn').classList.remove('btn')
+            document.getElementById('mapviev3-settings-btn').classList.add('close-btn')
+            mapviev = 'yandex#satellite'
+            localStorage.setItem('mapviev', mapviev)
+        })
+        document.getElementById('mapviev3-settings-btn').addEventListener('click', function () {
+            document.getElementById('mapviev1-settings-btn').classList.remove('btn')
+            document.getElementById('mapviev1-settings-btn').classList.add('close-btn')
+            document.getElementById('mapviev2-settings-btn').classList.remove('btn')
+            document.getElementById('mapviev2-settings-btn').classList.add('close-btn')
+            document.getElementById('mapviev3-settings-btn').classList.add('btn')
+            document.getElementById('mapviev3-settings-btn').classList.remove('close-btn')
+            mapviev = 'yandex#hybrid'
+            localStorage.setItem('mapviev', mapviev)
+        })
+
+        document.getElementById('close-settings-btn').addEventListener('click', function () {
+            document.getElementById('settings-popup').classList.add('hidden');
+            document.querySelector('.search-box').classList.remove('hidden');
+        })
+
+        document.getElementById('achiev-btn').addEventListener('click', function () {
+            document.getElementById('achiev-popup').classList.remove('hidden');
+            document.querySelector('.search-box').classList.add('hidden');
+        })
+
+        document.getElementById('close-achiev-btn').addEventListener('click', function () {
+            document.getElementById('achiev-popup').classList.add('hidden');
+            document.querySelector('.search-box').classList.remove('hidden');
+        })
+
         document.getElementById('start-btn').addEventListener('click', function () {
             document.querySelector('.search-box').classList.add('hidden');
             document.querySelector('.start-game-popup').classList.remove('hidden')
@@ -911,7 +1257,6 @@
         document.getElementById('start-game').addEventListener('click', function () {
             document.getElementById('score-indicator').innerText = score + '/' + mode * 5;
             document.body.style.backgroundImage = 'none';
-            document.body.style.backgroundColor = 'whitesmoke';
             document.querySelector('.start-game-popup').classList.add('hidden');
             document.querySelector('.result-box').classList.remove('hidden');
             document.querySelector('#map').classList.remove('hidden');
@@ -929,9 +1274,9 @@
             function init() {
                 var myMap = new ymaps.Map('map', {
                     center: [50.595414, 36.587277],
-                    zoom: 13,
+                    zoom: 12,
                     controls: [],
-                    type: 'yandex#hybrid'
+                    type: mapviev
                 });
                 myMap.events.add('click', function (e) {
                     if (!found) {
@@ -992,10 +1337,15 @@
                                 myMap.geoObjects.add(line);
                                 var distance = Math.round(ymaps.coordSystem.geo.getDistance(userCoords, redPointCoords));
                                 var scoreForRound = Math.max(0, Math.round((3000 - distance) / (3000 / mode)));
-                                var zoom = 17;
+                                var zoommap = localStorage.getItem('zoommap')
+                                var zoom
                                 if (objectsAfter != objectsBefore) {
                                     score += scoreForRound;
-                                    document.getElementById('score').innerText = 'За эту точку вы получили ' + scoreForRound + ' очков (' + distance + 'м до точки)';
+                                    if (distance <= 0.5) {
+                                        document.getElementById('score').innerText = 'За эту точку вы получили ' + scoreForRound + ' очков (' + distance + 'м до точки) \n (за это будет потом достижение😄)';
+                                    } else {
+                                        document.getElementById('score').innerText = 'За эту точку вы получили ' + scoreForRound + ' очков (' + distance + 'м до точки)';
+                                    }
                                     if (distance <= 100) {
                                         zoom = 18
                                     } else if (distance <= 500) {
@@ -1011,11 +1361,15 @@
                                     } else {
                                         zoom = 12
                                     }
-                                    myMap.setCenter([[(userCoords[0] + redPointCoords[0]) / 2], [(userCoords[1] + parseFloat(String(redPointCoords[1]).replace(/\r/g, ''), 10)) / 2]], zoom);
+                                    if (zoommap == 1) {
+                                        myMap.setCenter([[(userCoords[0] + redPointCoords[0]) / 2], [(userCoords[1] + parseFloat(String(redPointCoords[1]).replace(/\r/g, ''), 10)) / 2]], zoom);
+                                    }
                                 } else {
                                     document.getElementById('score').innerText = 'Вы не поставили точку (0 очков)';
                                     scoreForRound = 0;
-                                    myMap.setCenter(redPointCoords, zoom);
+                                    if (zoommap == 1) {
+                                        myMap.setCenter(redPointCoords, zoom);
+                                    }
                                 }
                                 document.getElementById('score-indicator').innerText = score + '/' + mode * 5 + ' +' + scoreForRound;
                                 document.getElementById('find-btn').classList.add('hidden');
@@ -1054,6 +1408,7 @@
                                 document.getElementById('next-btn').classList.add('hidden')
                                 document.getElementById('skip-btn').classList.add('hidden');
                                 document.getElementById('score').classList.add('hidden')
+                                clearInterval(timer);
                                 if (ImageCounter < 5) {
                                     document.getElementById('next-btn').classList.remove('hidden');
                                 } else {

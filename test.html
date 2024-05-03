@@ -1,26 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE-edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Move Image with Cursor</title>
+<style>
+</style>
 </head>
 <body>
+<!-- Элемент для отображения изображения -->
+<button id="btn">Наведите курсор мыши</button>
+<div id="image-container">
+  <img id="image" src="images/гибрид.jpg" alt="Изображение">
+</div>
 
-<form action="register.php" method="post">
-    <input type="text" placeholder="login" name="login">
-    <input type="text" placeholder="password" name="pass">
-    <input type="text" placeholder="repeat password" name="repeatpass">
-    <input type="text" placeholder="email" name="email">
-    <button type="submit">Зарегистрироваться</button>
-</form>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var btn = document.getElementById('btn');
+    var image = document.getElementById('image');
 
-<form action="login.php" method="post">
-    <input type="text" placeholder="login" name="login">
-    <input type="text" placeholder="password" name="pass">
-    <button type="submit">Войти</button>
-</form>
+    // Обработчик события наведения курсора на кнопку
+    btn.addEventListener('mousemove', function(event) {
+        // Получаем положение курсора относительно окна браузера
+        var x = event.clientX;
+        var y = event.clientY;
 
+        // Устанавливаем положение изображения относительно курсора
+        image.style.left = (x + 10) + 'px'; // Добавляем 10 пикселей для отступа по горизонтали
+        image.style.top = (y + 10) + 'px'; // Добавляем 10 пикселей для отступа по вертикали
+    });
+
+    // Обработчик события ухода курсора с кнопки
+    btn.addEventListener('mouseleave', function() {
+        // Скрываем изображение при уходе курсора с кнопки
+        image.style.display = 'none';
+    });
+
+    // Обработчик события возвращения курсора на кнопку
+    btn.addEventListener('mouseenter', function() {
+        // Показываем изображение при возвращении курсора на кнопку
+        image.style.display = 'block';
+    });
+});
+</script>
 </body>
 </html>
