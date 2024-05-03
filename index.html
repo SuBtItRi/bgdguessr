@@ -868,7 +868,6 @@
         }
 
         const currentZoommap = localStorage.getItem('zoommap')
-        var mapviev = 'yandex#hybrid'
         if (currentZoommap == 0) {
             var zoommap = 1
             document.getElementById('zoommap-settings-btn').classList.add('close-btn');
@@ -883,6 +882,7 @@
         }
 
         const currentMapviev = localStorage.getItem('mapviev')
+        var mapviev = 'yandex#hybrid'
         if (currentMapviev == 'yandex#map') {
             document.getElementById('mapviev1-settings-btn').classList.add('btn')
             document.getElementById('mapviev1-settings-btn').classList.remove('close-btn')
@@ -1187,10 +1187,10 @@
         document.getElementById('zoommap-settings-btn').addEventListener('click', function () {
             const currentZoommap = localStorage.getItem('zoommap')
             if (currentZoommap == 0) {
-                zoommap = 1
                 document.getElementById('zoommap-settings-btn').classList.remove('close-btn');
                 document.getElementById('zoommap-settings-btn').classList.add('btn');
                 document.getElementById('zoommap-settings-btn').innerText = 'вкл';
+                zoommap = 1
             }
             if (currentZoommap == 1) {
                 document.getElementById('zoommap-settings-btn').classList.add('close-btn');
