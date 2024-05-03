@@ -868,17 +868,17 @@
         }
 
         const currentZoommap = localStorage.getItem('zoommap')
-        if (currentZoommap == 0) {
-            var zoommap = 1
+        if (currentZoommap == '0') {
             document.getElementById('zoommap-settings-btn').classList.add('close-btn');
             document.getElementById('zoommap-settings-btn').classList.remove('btn');
             document.getElementById('zoommap-settings-btn').innerText = 'выкл';
+            var zoommap = '0'
         }
-        if (currentZoommap == 1) {
+        if (currentZoommap == '1') {
             document.getElementById('zoommap-settings-btn').classList.remove('close-btn');
             document.getElementById('zoommap-settings-btn').classList.add('btn');
             document.getElementById('zoommap-settings-btn').innerText = 'вкл';
-            var zoommap = 0
+            var zoommap = '1'
         }
 
         const currentMapviev = localStorage.getItem('mapviev')
@@ -1186,13 +1186,13 @@
         })
         document.getElementById('zoommap-settings-btn').addEventListener('click', function () {
             const currentZoommap = localStorage.getItem('zoommap')
-            if (currentZoommap == 0) {
+            if (currentZoommap == '0') {
                 document.getElementById('zoommap-settings-btn').classList.remove('close-btn');
                 document.getElementById('zoommap-settings-btn').classList.add('btn');
                 document.getElementById('zoommap-settings-btn').innerText = 'вкл';
                 zoommap = 1
             }
-            if (currentZoommap == 1) {
+            if (currentZoommap == '1') {
                 document.getElementById('zoommap-settings-btn').classList.add('close-btn');
                 document.getElementById('zoommap-settings-btn').classList.remove('btn');
                 document.getElementById('zoommap-settings-btn').innerText = 'выкл';
