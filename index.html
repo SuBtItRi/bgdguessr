@@ -868,6 +868,7 @@
             document.getElementById('theme-settings-btn').innerText = 'светлую';
         }
 
+        localStorage.setItem('zoommap', '0')
         const currentZoommap = localStorage.getItem('zoommap')
         if (currentZoommap == '0') {
             document.getElementById('zoommap-settings-btn').classList.add('close-btn');
