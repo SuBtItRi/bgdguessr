@@ -690,6 +690,7 @@
             transform: translate(-4%, -70%);
             animation: showImg 0.4s;
         }
+
         @keyframes showImg {
             0% {
                 opacity: 0;
@@ -698,6 +699,7 @@
                 opacity: 1;
             }
         }
+
         @keyframes hideImg {
             0% {
                 opacity: 1;
@@ -1301,28 +1303,11 @@
                 myMap.events.add('click', function (e) {
                     if (!found) {
                         var coords = e.get('coords');
-
-                        if (myMap.geoObjects.getLength() > 0) {
-                            myMap.geoObjects.removeAll();
-                        }
-
+                        myMap.geoObjects.removeAll(); // Удаляем все предыдущие геообъекты с карты
                         var placemark = new ymaps.Placemark(coords, {}, {
                             preset: 'islands#greenDotIcon'
                         });
-
                         myMap.geoObjects.add(placemark);
-
-                        if (myMap.geoObjects.getLength() > 1) {
-                            var line = new ymaps.Polyline([
-                                myMap.geoObjects.get(0).geometry.getCoordinates(),
-                                myMap.geoObjects.get(1).geometry.getCoordinates()
-                            ], {}, {
-                                strokeColor: '#ff0000',
-                                strokeWidth: 2
-                            });
-                            myMap.geoObjects.add(line);
-                        }
-
                         document.getElementById('find-btn').classList.remove('hidden');
                     }
                 });
@@ -1361,8 +1346,8 @@
                                 var zoom
                                 if (objectsAfter != objectsBefore) {
                                     if (distance <= 0.5) {
-                                        document.getElementById('score').innerText = 'За эту точку вы получили ' + scoreForRound + ` +${scoreForRound*=2} бонус очков (` + distance + 'м до точки) \n (за это будет потом достижение😄)';
-                                        scoreForRound*=2;
+                                        document.getElementById('score').innerText = 'За эту точку вы получили ' + scoreForRound + ` +${scoreForRound *= 2} бонус очков (` + distance + 'м до точки) \n (за это будет потом достижение😄)';
+                                        scoreForRound *= 2;
                                     } else {
                                         document.getElementById('score').innerText = 'За эту точку вы получили ' + scoreForRound + ' очков (' + distance + 'м до точки)';
                                     }
