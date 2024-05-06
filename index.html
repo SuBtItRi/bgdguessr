@@ -1001,18 +1001,14 @@
                     timer = setInterval(function () {
                         time--;
                         document.getElementById("countdown").textContent = time;
-                        if (time <= 0) {
-                            clearInterval(timer);
-                            document.getElementById("timer").classList.add("hidden");
-                        }
                         if (time === 0) {
                             document.getElementById('find-btn').click();
                         }
+                        if (time <= 0) {
+                            document.getElementById("countdown").textContent = '0';
+                            clearInterval(timer);
+                            }
                     }, 1000);
-                }
-                if (time <= 0) {
-                    document.getElementById("countdown").textContent = '0';
-                    clearInterval(timer);
                 }
                 document.getElementById("load").classList.add("hidden");
             };
@@ -1408,6 +1404,7 @@
                                 document.getElementById('score').classList.remove('hidden');
                                 document.getElementById('next-btn').classList.add('hidden')
                                 document.getElementById('skip-btn').classList.add('hidden');
+                                clearInterval(timer);
                                 setTimeout(() => {
                                     document.getElementById('score').classList.add('hidden')
                                     if (ImageCounter < 5) {
@@ -1429,7 +1426,6 @@
                             .then(data => {
                                 var coordinates = data.trim().split('\n');
                                 var redPointCoords = coordinates[randomNum - 1].split(',');
-
                                 var redPlacemark = new ymaps.Placemark(redPointCoords, {}, {
                                     preset: 'islands#redDotIcon'
                                 });
