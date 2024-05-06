@@ -830,6 +830,7 @@
             <button type="button" onclick="document.getElementById('audioFile').click()" class="click-btn">выбрать
                 файл
             </button>
+            <button class="click-btn close-btn" id="reset">Сбросить</button>
             <button class="click-btn btn" id="submit">Загрузить</button>
             <div id="warningMsgMP3"></div>
         </div>
@@ -887,8 +888,19 @@
     document.addEventListener('DOMContentLoaded', function () {
         var audio = new Audio('music.mp3')
         if (localStorage.getItem('audioSrc') !== null) {
-            audio = new Audio(localStorage.getItem('audioSrc'))
+            if (localStorage.getItem('audioSrc') === '0') {
+                console.log(1, audio)
+            } else {
+                audio = new Audio(localStorage.getItem('audioSrc'))
+                console.log(2, audio)
+            }
         }
+        document.getElementById('reset').addEventListener('click', function () {
+            audio.pause()
+            audio = new Audio('music.mp3')
+            audio.play()
+            localStorage.setItem('audioSrc', 0)
+        })
         audio.volume = 0.05
         audio.loop = true
         audio.pause()
