@@ -36,6 +36,7 @@
 <div id="warningMessage">Пожалуйста, выберите файл MP3 для загрузки.</div>
 
 <script>
+// Проверка файла и сохранение состояния страницы
 function checkFile() {
     var fileInput = document.getElementById('audioFile');
     if (fileInput.files.length === 0) {
@@ -45,28 +46,47 @@ function checkFile() {
         }, 3000); // Скрыть сообщение через 3 секунды
         event.preventDefault(); // Предотвратить отправку формы
     } else {
-        document.getElementById('warningMessage').style.display = 'block';
-        setTimeout(function() {
-            document.getElementById('warningMessage').style.display = 'none';
-        }, 3000); // Скрыть сообщение через 3 секунды
+        var fileName = fileInput.files[0].name;
+        if (!fileName.toLowerCase().endsWith('.mp3')) {
+            alert('Пожалуйста, выберите файл MP3.');
+            event.preventDefault(); // Предотвратить отправку формы
+        } else {
+            // Сохранение состояния страницы в localStorage
+            localStorage.setItem('formData', JSON.stringify(new FormData(document.getElementById('uploadForm'))));
+            localStorage.setItem('audioSrc', document.querySelector('audio') ? document.querySelector('audio').src : '');
+        }
     }
 }
 
-document.getElementById('uploadForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Предотвратить отправку формы
-    var fileInput = document.getElementById('audioFile');
-    var file = fileInput.files[0];
-    var reader = new FileReader();
-
-    reader.onload = function(event) {
+// Восстановление состояния страницы при загрузке
+window.onload = function() {
+    var formData = JSON.parse(localStorage.getItem('formData'));
+    if (formData) {
+        for (const [key, value] of formData.entries()) {
+            document.getElementById(key).value = value;
+        }
+    }
+    var audioSrc = localStorage.getItem('audioSrc');
+    if (audioSrc) {
+        var audioPlayer = document.getElementById('audioPlayer');
         var audio = new Audio();
-        audio.src = event.target.result;
-        audio.controls = true; // Добавить элементы управления для воспроизведения
-        document.getElementById('audioPlayer').innerHTML = ''; // Очистить предыдущий аудио элемент
-        document.getElementById('audioPlayer').appendChild(audio); // Добавить аудио на страницу
-    };
+        audio.src = audioSrc;
+        audio.controls = true;
+        audioPlayer.appendChild(audio);
+    }
+}
 
-    reader.readAsDataURL(file); // Чтение файла в формате Data URL
+// Сохранение состояния страницы при выходе или при нажатии на кнопку с классом click-btn
+window.addEventListener('beforeunload', function() {
+    localStorage.setItem('formData', JSON.stringify(new FormData(document.getElementById('uploadForm'))));
+    localStorage.setItem('audioSrc', document.querySelector('audio') ? document.querySelector('audio').src : '');
+});
+
+document.querySelectorAll('.click-btn').forEach(item => {
+    item.addEventListener('click', function() {
+        localStorage.setItem('formData', JSON.stringify(new FormData(document.getElementById('uploadForm'))));
+        localStorage.setItem('audioSrc', document.querySelector('audio') ? document.querySelector('audio').src : '');
+    });
 });
 </script>
 

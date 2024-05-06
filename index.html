@@ -711,6 +711,19 @@
             }
         }
 
+        #warningMsgMP3 {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffcccc;
+            padding: 20px;
+            border: 1px solid #ff0000;
+            border-radius: 5px;
+            color: black;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -813,11 +826,12 @@
         </div>
         <div class="text-settings-popup">Загрузка своей музыки</div>
         <div class="button-settings-popup">
-            <form id="uploadForm" enctype="multipart/form-data">
-                <input type="file" id="audioFile" accept="audio/*" style="display: none">
-                <button type="submit" onclick="document.getElementById('audioFile').click()" class="click-btn">выбрать файл</button>
-                <button class="click-btn btn" type="submit">Загрузить</button>
-            </form>
+            <input type="file" id="audioFile" accept="audio/*" style="display: none">
+            <button type="button" onclick="document.getElementById('audioFile').click()" class="click-btn">выбрать
+                файл
+            </button>
+            <button class="click-btn btn" id="submit">Загрузить</button>
+            <div id="warningMsgMP3"></div>
         </div>
         <br><br>
         <button id="close-settings-btn" class="click-btn close-btn">Закрыть</button>
@@ -849,7 +863,7 @@
         <div class="nc-wrap">
             <button id="next-btn" class="game-btn hidden">Далее</button>
             <button id="skip-btn" class="game-btn">Пропустить</button>
-            <button id="continue-btn" class="click-btn game-btn hidden">Продолжить</button>
+            <button id="continue-btn" class="game-btn hidden">Продолжить</button>
         </div>
     </div>
     <div id="map" class="hidden"></div>
@@ -872,9 +886,13 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var audio = new Audio('music.mp3')
+        if (localStorage.getItem('audioSrc') !== null) {
+            audio = new Audio(localStorage.getItem('audioSrc'))
+        }
+        audio.volume = 0.05
         audio.loop = true
-        audio.volume = 0.1
         audio.pause()
+        var page = 0
         var pointCount = 1
         var ImageCounter = 1
         var vl = 0
@@ -888,6 +906,7 @@
         var time
         var c_time
         var timer
+        var usedNumbers = [];
         // Настройки
         const currentTheme = localStorage.getItem('theme')
         if (currentTheme == "dark") {
@@ -942,22 +961,47 @@
             mapviev = 'yandex#hybrid'
         }
 
-        document.getElementById('uploadForm').addEventListener('submit', function (event) {
-            event.preventDefault();
+        document.getElementById('submit').addEventListener('click', function (event) {
+            event.preventDefault(); // Предотвратить отправку формы
             var fileInput = document.getElementById('audioFile');
             var file = fileInput.files[0];
             var reader = new FileReader();
-
-            reader.onload = function (event) {
-                audio.pause();
-                audio = new Audio();
-                audio.src = event.target.result;
-                audio.loop = true
-                audio.volume = 0.1
-                audio.play()
-            };
-
-            reader.readAsDataURL(file); // Чтение файла в формате Data URL
+            if (fileInput.files.length === 0) {
+                document.getElementById('warningMsgMP3').innerText = 'Вы не выбрали файл!'
+                document.getElementById('warningMsgMP3').style.display = 'block';
+                setTimeout(function () {
+                    document.getElementById('warningMsgMP3').style.display = 'none';
+                }, 3000);
+            } else {
+                var fileName = fileInput.files[0].name;
+                if (!fileName.toLowerCase().endsWith('.mp3')) {
+                    document.getElementById('warningMsgMP3').innerText = 'Вы выбрали файл не MP3!'
+                    document.getElementById('warningMsgMP3').style.display = 'block';
+                    setTimeout(function () {
+                        document.getElementById('warningMsgMP3').style.display = 'none';
+                    }, 3000);
+                } else {
+                    reader.onload = function (event) {
+                        audio.pause();
+                        audio = new Audio();
+                        audio.src = event.target.result;
+                        audio.loop = true
+                        audio.volume = 0.05
+                        audio.play()
+                        document.getElementById('toggle-btn').innerText = '🔈 '
+                        try {
+                            localStorage.setItem('audioSrc', event.target.result)
+                        } catch (error) {
+                            document.getElementById('warningMsgMP3').innerText = 'Ошибка, скорее всего вы загрузили файл больше 5MB!\n(музыка сейчас заиграет, но не сохранится)'
+                            document.getElementById('warningMsgMP3').style.display = 'block';
+                            setTimeout(function () {
+                                document.getElementById('warningMsgMP3').style.display = 'none';
+                            }, 6000);
+                        }
+                    };
+                    reader.readAsDataURL(file); // Чтение файла в формате Data URL
+                }
+            }
         });
 
         // Находим pointCounter
@@ -1022,8 +1066,6 @@
             c_time = t_values[parseInt(this.value) - 1];
             time = c_time;
         });
-        // Создаем массив для хранения уже использованных чисел
-        var usedNumbers = [];
         document.getElementById('toggle-btn').addEventListener('click', function () {
             vl++;
             if (vl === 0) {
