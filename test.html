@@ -3,45 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Move Image with Cursor</title>
+<title>Загрузка и воспроизведение аудио</title>
 <style>
+    #audioPlayer {
+        margin-top: 20px;
+    }
+
+    #warningMessage {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #ffcccc;
+        padding: 20px;
+        border: 1px solid #ff0000;
+        border-radius: 5px;
+    }
 </style>
 </head>
 <body>
-<!-- Элемент для отображения изображения -->
-<button id="btn">Наведите курсор мыши</button>
-<div id="image-container">
-  <img id="image" src="images/гибрид.jpg" alt="Изображение">
-</div>
+
+<form id="uploadForm" enctype="multipart/form-data">
+    <label for="audioFile">Выберите аудиофайл (MP3)</label>
+    <input type="file" id="audioFile" accept="audio/mp3" style="display: none;">
+    <button type="button" onclick="document.getElementById('audioFile').click()">Выбрать файл</button>
+    <button type="submit" onclick="checkFile()">Загрузить</button>
+</form>
+
+<div id="audioPlayer"></div>
+
+<div id="warningMessage">Пожалуйста, выберите файл MP3 для загрузки.</div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var btn = document.getElementById('btn');
-    var image = document.getElementById('image');
+function checkFile() {
+    var fileInput = document.getElementById('audioFile');
+    if (fileInput.files.length === 0) {
+        document.getElementById('warningMessage').style.display = 'block';
+        setTimeout(function() {
+            document.getElementById('warningMessage').style.display = 'none';
+        }, 3000); // Скрыть сообщение через 3 секунды
+        event.preventDefault(); // Предотвратить отправку формы
+    } else {
+        document.getElementById('warningMessage').style.display = 'block';
+        setTimeout(function() {
+            document.getElementById('warningMessage').style.display = 'none';
+        }, 3000); // Скрыть сообщение через 3 секунды
+    }
+}
 
-    // Обработчик события наведения курсора на кнопку
-    btn.addEventListener('mousemove', function(event) {
-        // Получаем положение курсора относительно окна браузера
-        var x = event.clientX;
-        var y = event.clientY;
+document.getElementById('uploadForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Предотвратить отправку формы
+    var fileInput = document.getElementById('audioFile');
+    var file = fileInput.files[0];
+    var reader = new FileReader();
 
-        // Устанавливаем положение изображения относительно курсора
-        image.style.left = (x + 10) + 'px'; // Добавляем 10 пикселей для отступа по горизонтали
-        image.style.top = (y + 10) + 'px'; // Добавляем 10 пикселей для отступа по вертикали
-    });
+    reader.onload = function(event) {
+        var audio = new Audio();
+        audio.src = event.target.result;
+        audio.controls = true; // Добавить элементы управления для воспроизведения
+        document.getElementById('audioPlayer').innerHTML = ''; // Очистить предыдущий аудио элемент
+        document.getElementById('audioPlayer').appendChild(audio); // Добавить аудио на страницу
+    };
 
-    // Обработчик события ухода курсора с кнопки
-    btn.addEventListener('mouseleave', function() {
-        // Скрываем изображение при уходе курсора с кнопки
-        image.style.display = 'none';
-    });
-
-    // Обработчик события возвращения курсора на кнопку
-    btn.addEventListener('mouseenter', function() {
-        // Показываем изображение при возвращении курсора на кнопку
-        image.style.display = 'block';
-    });
+    reader.readAsDataURL(file); // Чтение файла в формате Data URL
 });
 </script>
+
 </body>
 </html>

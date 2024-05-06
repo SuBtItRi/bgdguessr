@@ -809,7 +809,16 @@
             <button id="mapviev2-settings-btn" class="click-btn close-btn">Спутник</button>
             <img class="mv2sb" src="images/спутник.jpg">
             <button id="mapviev3-settings-btn" class="click-btn btn">Гибрид</button>
-            <img class="mv3sb" src="images/гибрид.jpg"></div>
+            <img class="mv3sb" src="images/гибрид.jpg">
+        </div>
+        <div class="text-settings-popup">Загрузка своей музыки</div>
+        <div class="button-settings-popup">
+            <form id="uploadForm" enctype="multipart/form-data">
+                <input type="file" id="audioFile" accept="audio/*" style="display: none">
+                <button type="submit" onclick="document.getElementById('audioFile').click()" class="click-btn">выбрать файл</button>
+                <button class="click-btn btn" type="submit">Загрузить</button>
+            </form>
+        </div>
         <br><br>
         <button id="close-settings-btn" class="click-btn close-btn">Закрыть</button>
     </div>
@@ -863,7 +872,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var audio = new Audio('music.mp3')
-        audio.loop = true // Чтобы музыка повторялась
+        audio.loop = true
         audio.volume = 0.1
         audio.pause()
         var pointCount = 1
@@ -933,6 +942,23 @@
             mapviev = 'yandex#hybrid'
         }
 
+        document.getElementById('uploadForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            var fileInput = document.getElementById('audioFile');
+            var file = fileInput.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function (event) {
+                audio.pause();
+                audio = new Audio();
+                audio.src = event.target.result;
+                audio.loop = true
+                audio.volume = 0.1
+                audio.play()
+            };
+
+            reader.readAsDataURL(file); // Чтение файла в формате Data URL
+        });
 
         // Находим pointCounter
         (async () => {
